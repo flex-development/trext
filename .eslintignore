@@ -1,0 +1,13 @@
+# ESLint Ignore
+# https://eslint.org/docs/user-guide/configuring/ignoring-code
+
+**/.yarn/*
+**/build/*
+**/cjs/*
+**/esm/*
+**/node_modules/*
+**/types/*
+
+**/CHANGELOG.md
+
+!/src/types/*

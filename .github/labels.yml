@@ -1,0 +1,151 @@
+# Repository Labels
+
+# Default GitHub labels
+
+- name: good first issue
+  description: Good for first-time contributors
+  color: 586069
+
+# Flag labels
+# Indicates additional work is needed.
+
+- name: flag:breaking-change
+  description: Contains changes that require major version bump
+  color: fbca04
+
+- name: flag:duplicate
+  description: Issue, pull request, or discussion already exists
+  color: fbca04
+
+- name: flag:needs-discussion
+  description: Discussion required before implementation
+  color: fbca04
+
+- name: flag:needs-docs
+  description: Missing documentation or needs existing documentation update
+  color: fbca04
+
+- name: flag:needs-refactor
+  description: Code improvements required before being merged
+  color: fbca04
+
+# Scope labels
+# Project-specific groups for issues, pull requests, and discussions.
+
+- name: scope:deploy-release
+  description: Package deployment and release tasks
+  color: 74cefc
+
+- name: scope:deps
+  description: Dependency updates
+  color: 74cefc
+
+- name: scope:scripts
+  description: Package scripts
+  color: 74cefc
+
+- name: scope:tests
+  description: Testing
+  color: 74cefc
+
+- name: scope:tools
+  description: Project tools (CLIs, helpers, and scripts)
+  color: 74cefc
+
+- name: scope:trext
+  description: Trext class
+  color: 74cefc
+
+- name: scope:typescript
+  description: TypeScript support (enums, interfaces, types)
+  color: 74cefc
+
+# Status labels
+# Current state of an issue, pull request, or discussion.
+
+- name: status:awaiting-answers
+  description: Needs clarification or more information from author
+  color: e7034b
+
+- name: status:blocked
+  description: Blocked by other work tracked in different issue
+  color: e7034b
+
+- name: status:cannot-reproduce
+  description: Bug report cannot be reproduced
+  color: e7034b
+
+- name: status:fixed
+  description: Fixed and merged into next, but not yet released
+  color: e7034b
+
+- name: status:help-wanted
+  description: Extra attention is needed
+  color: e7034b
+
+- name: status:icebox
+  description: Changes that won't be implemented
+  color: e7034b
+
+- name: status:invalid
+  description: No action to be taken or missing information
+  color: e7034b
+
+- name: status:merged
+  description: Merged into next, but not into main (or released)
+  color: e7034b
+
+- name: status:needs-triage
+  description: Needs verification and minimal reproduction
+  color: e7034b
+
+- name: status:released
+  description: Merged into next, main, and released
+  color: e7034b
+
+- name: status:stale
+  description: Superseded by different issue, pull request, or discussion
+  color: e7034b
+
+- name: status:wip
+  description: Work in progress
+  color: e7034b
+
+# Type labels
+# Types of issues, pull requests, and discussions.
+
+- name: type:build
+  description: Build system or external dependencies
+  color: 0052cc
+
+- name: type:chore
+  description: Housekeeping tasks / changes that don't impact external users
+  color: 0052cc
+
+- name: type:discussion
+  description: Discussion topic
+  color: 0052cc
+
+- name: type:docs
+  description: Improvements or additions to documentation
+  color: 0052cc
+
+- name: type:feat
+  description: New feature or request
+  color: 0052cc
+
+- name: type:fix
+  description: Something isn't working
+  color: 0052cc
+
+- name: type:perf
+  description: Performance updates
+  color: 0052cc
+
+- name: type:question
+  description: Questions
+  color: 0052cc
+
+- name: type:refactor
+  description: Code improvements
+  color: 0052cc

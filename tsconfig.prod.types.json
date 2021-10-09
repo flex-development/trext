@@ -1,0 +1,7 @@
+{
+  "compilerOptions": {
+    "emitDeclarationOnly": true,
+    "outDir": "./types"
+  },
+  "extends": "./tsconfig.prod.json"
+}

@@ -1,0 +1,57 @@
+# Continuous Integration
+#
+# References:
+#
+# - https://github.com/actions/checkout
+# - https://github.com/actions/setup-node
+# - https://docs.github.com/actions/guides/building-and-testing-nodejs
+
+---
+name: continuous-integration
+on:
+  - pull_request
+  - workflow_dispatch
+jobs:
+  continuous-integration:
+    runs-on: ubuntu-latest
+    env:
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN_ADMIN }}
+      PAT_GPR: ${{ secrets.PAT_GPR_ADMIN }}
+    strategy:
+      matrix:
+        node: [12.x, 14.x, 16.x]
+    steps:
+      - id: checkout
+        name: Checkout branch
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.head_ref }}
+      - id: setup-node
+        name: Setup Node ${{ matrix.node }}
+        uses: actions/setup-node@v2
+        with:
+          always-auth: true
+          cache: yarn
+          node-version: ${{ matrix.node }}
+          registry-url: https://npm.pkg.github.com
+          scope: '@${{ github.repository_owner }}'
+      - id: install
+        name: Install dependencies
+        run: yarn --immutable
+        env:
+          NODE_AUTH_TOKEN: ${PAT_GPR}
+      - id: env
+        name: Set environment variables
+        run: node_modules/.bin/loadenv -gc=test
+      - id: check-format
+        name: Check code formatting
+        run: yarn check:format
+      - id: check-style
+        name: Check code style
+        run: yarn check:style --max-warnings 0
+      - id: check-build
+        name: Check build
+        run: yarn build --tarball
+      - id: env-post
+        name: Post Set environment variables
+        run: echo "NODE_OPTIONS=''" >> $GITHUB_ENV

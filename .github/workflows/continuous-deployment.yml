@@ -1,0 +1,186 @@
+# Continuous Deployment
+#
+# References:
+#
+# - https://github.com/actions/github-script
+# - https://github.com/actions/checkout
+# - https://github.com/actions/setup-node
+# - https://github.com/actions-registry/github-repo-sync-upstream
+
+---
+name: continuous-deployment
+on:
+  pull_request:
+    branches:
+      - next
+    types: [closed]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: release tag
+        required: true
+jobs:
+  deployment-info:
+    name: Get deployment details
+    if: |
+      github.event.inputs.tag ||
+      (startsWith(github.event.pull_request.head.ref, 'release/') 
+      && github.event.pull_request.merged == true)
+    runs-on: ubuntu-latest
+    outputs:
+      directory: ${{ steps.release.outputs.directory }}
+      publish_args: ${{ steps.publish_args.outputs.args }}
+      publish: ${{ steps.directory_check.outputs.files_exists }} == 'true'
+      tag: ${{ steps.release.outputs.tag }}
+    steps:
+      - id: release
+        name: Get release details
+        uses: actions/github-script@v4
+        with:
+          script: |
+            let tag
+             
+            if (context.payload.inputs) tag = context.payload.inputs.tag
+            if (context.payload.pull_request) {
+              tag = context.payload.pull_request.head.ref.split('release/')[1]
+            }
+
+            const { 0: workspace_no_scope, 1: version } = tag.split('@')
+
+            const dir = './'
+            const workspace = `@${context.repo.owner}/${workspace_no_scope}`
+
+            core.exportVariable('tag', tag)
+            core.exportVariable('version', version)
+            core.exportVariable('workspace', workspace)
+
+            core.setOutput('directory', dir)
+            core.setOutput('tag', tag)
+      - id: directory_check
+        name: Check if package directory exists
+        uses: andstor/file-existence-action@v1.0.1
+        with:
+          files: ${{ steps.release.outputs.directory }}
+      - id: publish_args
+        name: Get publish arguments
+        if: ${{ steps.directory_check.outputs.files_exists }} == 'true'
+        uses: actions/github-script@v4
+        with:
+          script: |
+            const workspace = process.env.workspace
+            const version = process.env.version
+
+            const tarball = `./${workspace.replace('/', '-')}-${version}.tgz`
+            let tag = process.env.version.split('-')[1] || ''
+
+            if (tag && tag.includes('.')) tag = tag.split('.')[0]
+            if (tag) tag = `--tag ${tag}`
+
+            core.setOutput('args', `${tarball} ${tag}`.trim())
+  publish-package:
+    name: Publish package to GPR & NPM
+    if: ${{ needs.deployment-info.outputs.publish }}
+    needs: deployment-info
+    runs-on: ubuntu-latest
+    env:
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN_ADMIN }}
+      PAT_GPR: ${{ secrets.PAT_GPR_ADMIN }}
+    strategy:
+      matrix:
+        node: [16.0.0]
+    steps:
+      - id: checkout
+        name: Checkout branch
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.head_ref }}
+      - id: setup-npmrc-gpr
+        name: Setup .npmrc file [GPR]
+        uses: actions/setup-node@v2
+        with:
+          always-auth: true
+          cache: yarn
+          node-version: ${{ matrix.node }}
+          registry-url: https://npm.pkg.github.com
+          scope: '@${{ github.repository_owner }}'
+      - id: dependencies
+        name: Install dependencies
+        run: yarn --immutable
+        env:
+          NODE_AUTH_TOKEN: ${{ env.PAT_GPR }}
+      - id: env
+        name: Set environment variables
+        working-directory: ${{ needs.deployment-info.outputs.directory }}
+        run: node_modules/.bin/loadenv -gc=production
+      - id: build
+        name: Build project
+        working-directory: ${{ needs.deployment-info.outputs.directory }}
+        run: yarn build --tarball
+      - id: unset-node-options
+        name: Unset NODE_OPTIONS
+        working-directory: ${{ needs.deployment-info.outputs.directory }}
+        run: echo "NODE_OPTIONS=''" >> $GITHUB_ENV
+      - id: publish-to-gpr
+        name: Publish package [GPR]
+        working-directory: ${{ needs.deployment-info.outputs.directory }}
+        run: npm publish ${{ needs.deployment-info.outputs.publish_args }}
+        env:
+          NODE_AUTH_TOKEN: ${{ env.PAT_GPR }}
+      - id: setup-npmrc-npm
+        name: Setup .npmrc file [NPM]
+        uses: actions/setup-node@v2
+        with:
+          always-auth: true
+          cache: yarn
+          node-version: ${{ matrix.node }}
+          registry-url: https://registry.npmjs.org
+          scope: '@${{ github.repository_owner }}'
+      - id: publish-to-npm
+        name: Publish package [NPM]
+        working-directory: ${{ needs.deployment-info.outputs.directory }}
+        run: npm publish ${{ needs.deployment-info.outputs.publish_args }}
+        env:
+          NODE_AUTH_TOKEN: ${{ env.NPM_TOKEN }}
+  update-production-branch:
+    name: Update production branch
+    needs: publish-package
+    runs-on: ubuntu-latest
+    steps:
+      - id: checkout
+        name: Checkout main branch
+        uses: actions/checkout@v2
+        with:
+          ref: main
+      - id: update
+        uses: actions-registry/github-repo-sync-upstream@v0.0.2
+        with:
+          destination_branch: main
+          source_branch: next
+          source_repo: ${{ github.repository }}
+  publish-release:
+    name: Publish GitHub Release
+    needs: [deployment-info, update-production-branch]
+    runs-on: ubuntu-latest
+    steps:
+      - id: publish
+        name: Publish GitHub release
+        uses: actions/github-script@v4
+        env:
+          tag: ${{ needs.deployment-info.outputs.tag }}
+        with:
+          script: |
+            const endpoint = 'GET /repos/{owner}/{repo}/releases'
+            const releases = await github.paginate(endpoint, context.repo)
+
+            const release = releases.find(({ name }) => {
+              return name.startsWith(process.env.tag)
+            })
+
+            if (release && release.draft) {
+              await github.repos.updateRelease({
+                ...context.repo,
+                draft: false, 
+                release_id: release.id, 
+                tag_name: process.env.tag 
+              })
+            }

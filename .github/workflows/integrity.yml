@@ -1,0 +1,75 @@
+# Integrity Check
+#
+# References:
+#
+# - https://github.com/actions/checkout
+# - https://github.com/actions/setup-node
+# - https://github.com/actions/cache/tree/v2.1.6
+
+---
+name: integrity
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+    paths:
+      - .github/workflows/**
+      - .yarnrc.yml
+      - yarn.lock
+  push:
+    branches:
+      - main
+      - next
+    paths:
+      - .github/workflows/**
+      - .yarnrc.yml
+      - yarn.lock
+jobs:
+  integrity-check:
+    runs-on: ubuntu-latest
+    env:
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN_ADMIN }}
+      PAT_GPR: ${{ secrets.PAT_GPR_ADMIN }}
+    strategy:
+      matrix:
+        node: [12, 14, 16]
+    steps:
+      - id: checkout
+        name: Checkout branch
+        uses: actions/checkout@v2
+      - id: setup-node
+        name: Setup Node ${{ matrix.node }} environment
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node }}
+          scope: '@${{ github.repository_owner }}'
+      # Why not using setup-node 2.2+ cache option (yet)?
+      # See https://github.com/belgattitude/nextjs-monorepo-example/pull/369
+      - id: yarn-cache-dir-path
+        name: Get yarn cache directory path
+        run: echo "::set-output name=dir::$(yarn config get cacheFolder)"
+      # Use to check for cache-hit: steps.yarn-cache.outputs.cache-hit != 'true'
+      - id: yarn-cache
+        name: Restore yarn cache
+        uses: actions/cache@v2.1.6
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: |
+            yarn-cache-folder-os-${{ runner.os }}-node-${{ env.node-version
+            }}-${{ hashFiles('**/yarn.lock', '.yarnrc.yml') }}
+          restore-keys: |
+            yarn-cache-folder-os-${{ runner.os }}-node-${{ env.node-version }}-
+            yarn-cache-folder-os-${{ runner.os }}-
+      - id: install
+        name: Install dependencies
+        run: yarn install --immutable
+        env:
+          NODE_AUTH_TOKEN: ${PAT_GPR}
+      - id: dedupe-check
+        name: Check for duplicate dependencies in lock file
+        run: yarn check:dedupe
+      - id: dependency-graph
+        name: Check dependency graph
+        run: yarn check:install

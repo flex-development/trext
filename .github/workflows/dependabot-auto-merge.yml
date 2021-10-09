@@ -1,0 +1,25 @@
+# Dependabot Auto Merge
+#
+# Automatically approve and merge pull requests from Dependabot.
+#
+# References:
+#
+# - https://github.com/ahmadnassri/action-dependabot-auto-merge
+# - https://github.com/ahmadnassri/action-dependabot-auto-merge/issues/60#issuecomment-806027389
+
+---
+name: dependabot-auto-merge
+on: pull_request_target
+jobs:
+  approve-pr-squash-merge:
+    if: github.actor == 'dependabot[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - id: dependabot-auto-merge
+        name: Auto approve pull request, then squash and merge
+        uses: ahmadnassri/action-dependabot-auto-merge@v2.4.0
+        with:
+          approve: true
+          command: squash and merge
+          config: .github/auto-merge.yml
+          github-token: ${{ secrets.PAT_REPO_ADMIN }}

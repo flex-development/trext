@@ -1,0 +1,27 @@
+# Label Syncer
+#
+# References:
+#
+# - https://github.com/micnncim/action-label-syncer
+
+---
+name: label-syncer
+on:
+  push:
+    branches:
+      - main
+      - next
+jobs:
+  sync-labels:
+    runs-on: ubuntu-latest
+    steps:
+      - id: checkout
+        name: Checkout
+        uses: actions/checkout@v2
+      - id: sync
+        name: Sync labels
+        uses: micnncim/action-label-syncer@v1.3.0
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          manifest: .github/labels.yml

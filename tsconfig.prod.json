@@ -1,0 +1,35 @@
+{
+  "compilerOptions": {
+    "declaration": true,
+    "inlineSourceMap": true,
+    "inlineSources": true,
+    "noEmit": false,
+    "noEmitOnError": true,
+    "outDir": "./build",
+    "plugins": [
+      {
+        "afterDeclarations": true,
+        "exclude": ["*"],
+        "transform": "@zerollup/ts-transform-paths"
+      }
+    ],
+    "removeComments": false,
+    "resolveJsonModule": false,
+    "rootDir": "./src",
+    "skipLibCheck": true,
+    "stripInternal": true,
+    "useDefineForClassFields": true
+  },
+  "exclude": [
+    "**/__mocks__",
+    "**/__tests__",
+    "**/node_modules",
+    "./build",
+    "./cjs",
+    "./esm",
+    "./types"
+  ],
+  "extends": "./tsconfig.json",
+  "files": [],
+  "include": ["src"]
+}

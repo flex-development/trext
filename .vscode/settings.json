@@ -1,0 +1,15 @@
+{
+  "eslint.options": {
+    "configFile": "./.eslintrc.cjs",
+    "extensions": [".cjs", ".md", ".mjs", ".ts"]
+  },
+  "files.associations": {
+    ".env": "shellscript",
+    ".env.*": "shellscript",
+    "commit-msg": "shellscript",
+    "pre-commit": "shellscript",
+    "pre-push": "shellscript"
+  },
+  "prettier.configPath": "./.prettierrc.cjs",
+  "typescript.tsdk": "node_modules/typescript/lib"
+}

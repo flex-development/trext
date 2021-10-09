@@ -1,0 +1,51 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "allowUnreachableCode": false,
+    "baseUrl": "./",
+    "checkJs": false,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "lib": ["es2019", "es2020.bigint", "es2020.promise", "es2020.string"],
+    "module": "es2020",
+    "moduleResolution": "node",
+    "noEmit": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitAny": false,
+    "noImplicitReturns": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "paths": {
+      "@flex-development/grease": [
+        "node_modules/@flex-development/grease/cjs/index"
+      ],
+      "@flex-development/grease/*": [
+        "node_modules/@flex-development/grease/cjs/*"
+      ],
+      "@flex-development/log": ["node_modules/@flex-development/log/esm/index"],
+      "@flex-development/log/*": ["node_modules/@flex-development/log/esm/*"],
+      "@tests/fixtures/*": ["__tests__/__fixtures__/*"],
+      "@tests/*": ["__tests__/*"]
+    },
+    "preserveConstEnums": true,
+    "pretty": true,
+    // Should work with NODE_OPTIONS='--experimental-json-modules' flag
+    // See: https://nodejs.org/api/esm.html#esm_json_modules
+    "resolveJsonModule": true,
+    "rootDir": "./",
+    "strict": true,
+    // Node.js 12
+    "target": "es2019"
+  },
+  "exclude": ["**/node_modules", "./build", "./cjs", "./esm", "./types"],
+  "files": ["typings/jest.d.ts"],
+  "include": ["**/*.cjs", "**/.*.cjs", "**/*.mjs", "**/*.ts", "**/.*.ts"],
+  "ts-node": {
+    "moduleTypes": {
+      ".commitlintrc.ts": "cjs",
+      "jest.config.base.ts": "cjs",
+      "jest.config.ts": "cjs"
+    },
+    "transpileOnly": true
+  }
+}

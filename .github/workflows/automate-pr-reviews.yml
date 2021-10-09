@@ -1,0 +1,27 @@
+# Automate Pull Request Reviews
+#
+# References:
+#
+# - https://github.com/actions/checkout
+# - https://github.com/flex-development/flautoreview
+
+---
+name: automate-pr-reviews
+on:
+  pull_request:
+    types: [review_requested]
+jobs:
+  flautoreview:
+    runs-on: ubuntu-latest
+    steps:
+      - id: checkout
+        name: Checkout branch
+        uses: actions/checkout@v2
+      - id: automate-review
+        name: Automate reviews
+        uses: flex-development/flautoreview@v1.0.1
+        with:
+          body: lgtm 👍🏾
+          reviewers: flexdevelopment
+          senders: unicornware
+          token: ${{ secrets.PAT_REPO_ADMIN }}

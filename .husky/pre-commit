@@ -1,0 +1,8 @@
+# Pre Commit Hook
+#
+# References:
+#
+# - https://typicode.github.io/husky
+# - https://github.com/okonet/lint-staged#command-line-flags
+
+lint-staged

@@ -1,0 +1,9 @@
+# Dependabot Auto-merge Configuration
+#
+# References:
+#
+# - https://github.com/ahmadnassri/action-dependabot-auto-merge#configuration-file-syntax
+
+- match:
+  dependency_type: all
+  update_type: semver:${TARGET}

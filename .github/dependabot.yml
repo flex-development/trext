@@ -1,0 +1,26 @@
+# Dependabot Configuration
+#
+# References:
+#
+# - https://docs.github.com/en/code-security/supply-chain-security/keeping-your-dependencies-updated-automatically/configuration-options-for-dependency-updates
+
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: '/'
+    schedule:
+      interval: daily
+    commit-message:
+      prefix: build
+      include: scope
+    ignore:
+      - dependency-name: 'husky'
+    labels:
+      - scope:deps
+      - type:build
+    open-pull-requests-limit: 5
+    pull-request-branch-name:
+      separator: '-'
+    rebase-strategy: auto
+    target-branch: next
+    versioning-strategy: increase
