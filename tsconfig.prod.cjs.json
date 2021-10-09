@@ -3,7 +3,10 @@
     "lib": ["es5"],
     "module": "commonjs",
     "outDir": "./cjs",
-    "paths": {},
+    "paths": {
+      "@trext": ["src/index.ts"],
+      "@trext/*": ["src/*"]
+    },
     "target": "es5"
   },
   "extends": "./tsconfig.prod.json"

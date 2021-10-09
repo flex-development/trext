@@ -1,7 +1,10 @@
 {
   "compilerOptions": {
     "outDir": "./esm",
-    "paths": {}
+    "paths": {
+      "@trext": ["src/index.ts"],
+      "@trext/*": ["src/*"]
+    }
   },
   "extends": "./tsconfig.prod.json"
 }

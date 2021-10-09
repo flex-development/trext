@@ -3,4 +3,4 @@
  * @module trext/types
  */
 
-export default {}
+export type { default as TrextDefaults } from './trext-defaults.type'
