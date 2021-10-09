@@ -83,6 +83,14 @@
     "./types/*": {
       "import": "./esm/types/*.mjs",
       "require": "./cjs/types/*.cjs"
+    },
+    "./utils": {
+      "import": "./esm/utils/index.mjs",
+      "require": "./cjs/utils/index.cjs"
+    },
+    "./utils/*": {
+      "import": "./esm/utils/*.mjs",
+      "require": "./cjs/utils/*.cjs"
     }
   },
   "main": "./cjs/trext.min.cjs",
@@ -186,14 +194,14 @@
     "ts-node": "10.2.1",
     "tsconfig-paths": "3.11.0",
     "ttypescript": "1.5.12",
-    "typescript": "4.5.0-beta",
+    "typescript": "4.4.3",
     "yargs": "17.2.1"
   },
   "optionalDependencies": {
-    "@types/node": ">=12.20.0"
+    "@types/node": ">=15"
   },
   "peerDependencies": {
-    "typescript": "4.5.0-beta"
+    "typescript": ">=4.4.0"
   },
   "peerDependenciesMeta": {
     "typescript": {
@@ -201,7 +209,7 @@
     }
   },
   "engines": {
-    "node": ">=12.20.0",
+    "node": ">=15",
     "yarn": "3.0.2"
   },
   "env": {
