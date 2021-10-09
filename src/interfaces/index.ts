@@ -3,4 +3,4 @@
  * @module trext/interfaces
  */
 
-export default {}
+export type { default as TrextOptions } from './trext-options.interface'
