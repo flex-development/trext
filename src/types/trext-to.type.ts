@@ -1,4 +1,3 @@
-import type FileExtension from './file-extension.type'
 import type TrextToFn from './trext-to-fn.type'
 
 /**
@@ -16,6 +15,6 @@ import type TrextToFn from './trext-to-fn.type'
  *
  * [1]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String/replace#specifying_a_function_as_a_parameter
  */
-type TrextTo<T extends string = string> = FileExtension<T> | TrextToFn<T>
+type TrextTo<T extends string = string> = string | TrextToFn<T>
 
 export default TrextTo

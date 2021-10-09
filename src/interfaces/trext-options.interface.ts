@@ -14,23 +14,23 @@ import type { RegexString, TrextTo } from '@trext/types'
  */
 interface TrextOptions<F extends string = string, T extends string = string> {
   /**
+   * Babel transformation options.
+   *
+   * @default {sourceMaps:true}
+   */
+  babel?: TransformOptions
+
+  /**
    * File extension to transform.
    */
   from: F
 
   /**
-   * File extension search pattern.
+   * File extension pattern.
    *
    * @default /\..+$/
    */
   pattern?: RegexString
-
-  /**
-   * Babel transformation options.
-   *
-   * @default {}
-   */
-  transform?: TransformOptions
 
   /**
    * New file extension or function that returns a file extension.

@@ -15,9 +15,22 @@ module.exports = {
       RULES_SPELLCHECKER[0],
       {
         ...RULES_SPELLCHECKER[1],
-        skipWords: [...RULES_SPELLCHECKER[1].skipWords, 'trext']
+        skipWords: [
+          ...RULES_SPELLCHECKER[1].skipWords,
+          'callee',
+          'trext',
+          'trextel'
+        ]
       }
     ]
   },
-  overrides
+  overrides: [
+    ...overrides,
+    {
+      files: ['src/plugins/trextel.plugin.ts'],
+      rules: {
+        'no-useless-escape': 0
+      }
+    }
+  ]
 }

@@ -9,11 +9,13 @@ import type { TrextOptions } from '@trext/interfaces'
  * Default `trext` options.
  */
 type TrextDefaults = {
-  /** {@link TrextOptions.pattern} */
-  pattern: Exclude<NonNullable<TrextOptions['pattern']>, string>
+  /** {@link TrextOptions#babel} */
+  babel: { sourceMaps: true } & Partial<
+    Record<keyof Omit<NonNullable<TrextOptions['babel']>, 'sourceMaps'>, never>
+  >
 
-  /** {@link TrextOptions.transform} */
-  transform: Record<string, never>
+  /** {@link TrextOptions#pattern} */
+  pattern: Exclude<NonNullable<TrextOptions['pattern']>, string>
 }
 
 export default TrextDefaults

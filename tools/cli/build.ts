@@ -13,6 +13,7 @@ import { hideBin } from 'yargs/helpers'
 import exec from '../helpers/exec'
 import fixNodeModulePaths from '../helpers/fix-node-module-paths'
 import { $PACKAGE, $WORKSPACE, $WORKSPACE_NO_SCOPE } from '../helpers/pkg'
+// @ts-expect-error TS2307
 import useDualExports from '../helpers/use-dual-exports.mjs'
 
 /**
