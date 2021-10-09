@@ -18,6 +18,7 @@ module.exports = {
         skipWords: [
           ...RULES_SPELLCHECKER[1].skipWords,
           'callee',
+          'errno',
           'trext',
           'trextel'
         ]
