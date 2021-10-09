@@ -64,6 +64,14 @@
       "require": "./cjs/interfaces/*.cjs"
     },
     "./package.json": "./package.json",
+    "./plugins": {
+      "import": "./esm/plugins/index.mjs",
+      "require": "./cjs/plugins/index.cjs"
+    },
+    "./plugins/*": {
+      "import": "./esm/plugins/*.mjs",
+      "require": "./cjs/plugins/*.cjs"
+    },
     "./trext": {
       "import": "./esm/trext.mjs",
       "require": "./cjs/trext.cjs"
