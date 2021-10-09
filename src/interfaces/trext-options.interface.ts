@@ -1,5 +1,5 @@
 import type { TransformOptions } from '@babel/core'
-import type { FileExtension, TrextToFn } from '@trext/types'
+import type { TrextTo } from '@trext/types'
 
 /**
  * @file Interfaces - TrextOptions
@@ -33,14 +33,11 @@ interface TrextOptions<F extends string = string, T extends string = string> {
   transform?: TransformOptions
 
   /**
-   * New file extension or [function that returns new file extension][1].
+   * New file extension or function that returns a file extension.
    *
-   * If the value is a string, a period (`.`) will be prepended to coerce the
-   * value into a valid file extension.
-   *
-   * [1]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String/replace#specifying_a_function_as_a_parameter
+   * @see {@link TrextTo}
    */
-  to: FileExtension<T> | TrextToFn<T>
+  to: TrextTo<T>
 }
 
 export default TrextOptions
