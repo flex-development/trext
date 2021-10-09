@@ -1,4 +1,5 @@
 import type { TransformOptions } from '@babel/core'
+import type { FileExtension } from '@trext/types'
 
 /**
  * @file Interfaces - TrextOptions
@@ -7,12 +8,15 @@ import type { TransformOptions } from '@babel/core'
 
 /**
  * Options to configure file extension and import statement transformations.
+ *
+ * @template F - Old file extension name(s)
+ * @template T - New file extension name(s)
  */
-interface TrextOptions {
+interface TrextOptions<F extends string = string, T extends string = string> {
   /**
    * File extension to transform.
    */
-  from: string
+  from: F
 
   /**
    * File extension search pattern.
@@ -31,12 +35,12 @@ interface TrextOptions {
   /**
    * New file extension or [function that returns new file extension][1].
    *
-   * If the value is a string and doesn't start with a period (`.`), one will be
-   * prepended to coerce the value into a valid file extension.
+   * If the value is a string, a period (`.`) will be prepended to coerce the
+   * value into a valid file extension.
    *
    * [1]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String/replace#specifying_a_function_as_a_parameter
    */
-  to: string | ((match: string, ...args: any[]) => string)
+  to: FileExtension<T> | ((match: string, ...args: any[]) => FileExtension<T>)
 }
 
 export default TrextOptions
