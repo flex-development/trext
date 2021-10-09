@@ -40,6 +40,10 @@
   description: Dependency updates
   color: 74cefc
 
+- name: scope:plugins
+  description: Plugins
+  color: 74cefc
+
 - name: scope:scripts
   description: Package scripts
   color: 74cefc
