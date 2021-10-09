@@ -64,6 +64,10 @@
   description: TypeScript support (enums, interfaces, types)
   color: 74cefc
 
+- name: scope:utils
+  description: Utilities
+  color: 74cefc
+
 # Status labels
 # Current state of an issue, pull request, or discussion.
 
