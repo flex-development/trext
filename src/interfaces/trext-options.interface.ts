@@ -1,5 +1,5 @@
 import type { TransformOptions } from '@babel/core'
-import type { TrextTo } from '@trext/types'
+import type { RegexString, TrextTo } from '@trext/types'
 
 /**
  * @file Interfaces - TrextOptions
@@ -23,7 +23,7 @@ interface TrextOptions<F extends string = string, T extends string = string> {
    *
    * @default /\..+$/
    */
-  pattern?: RegExp | string
+  pattern?: RegexString
 
   /**
    * Babel transformation options.

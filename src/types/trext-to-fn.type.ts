@@ -1,4 +1,5 @@
 import type FileExtension from './file-extension.type'
+import type RegexString from './regex-string.type'
 
 /**
  * @file Type Definitions - TrextToFn
@@ -13,7 +14,7 @@ import type FileExtension from './file-extension.type'
  * [1]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String/replace#specifying_a_function_as_a_parameter
  */
 type TrextToFn<T extends string = string> = (
-  match: string,
+  match: RegexString,
   ...args: any[]
 ) => FileExtension<T>
 
