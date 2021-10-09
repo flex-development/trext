@@ -54,6 +54,7 @@ const config: UserConfig = {
         'esm',
         'github',
         'hybrid',
+        'plugins',
         'release',
         'scripts',
         'tests',
