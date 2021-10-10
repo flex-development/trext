@@ -36,6 +36,12 @@ module.exports = {
       rules: {
         'no-useless-escape': 0
       }
+    },
+    {
+      files: ['docs/examples/dynamic.example.ts'],
+      rules: {
+        '@typescript-eslint/no-unused-vars': 0
+      }
     }
   ]
 }
