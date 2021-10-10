@@ -10,7 +10,7 @@ File extension transformer
 ## Overview
 
 [Getting Started](#getting-started)  
-[Usage](#usage)  
+[Installation](#installation)  
 [Usage](#usage)  
 [Built With](#built-with)  
 [Contributing](CONTRIBUTING.md)
