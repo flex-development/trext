@@ -7,7 +7,7 @@ import type { RegexString, TrextTo } from '@trext/types'
  */
 
 /**
- * Options to configure file extension and import statement transformations.
+ * Options to configure file extension transformations.
  *
  * @template F - Old file extension name(s)
  * @template T - New file extension name(s)
