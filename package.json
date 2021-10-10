@@ -4,13 +4,16 @@
   "version": "1.0.0",
   "keywords": [
     "babel",
+    "build",
     "cjs",
     "esm",
     "extension",
     "mjs",
     "rename",
     "transform",
-    "typescript"
+    "typescript",
+    "utility",
+    "workflow"
   ],
   "homepage": "https://github.com/flex-development/trext#readme",
   "repository": "git://github.com/flex-development/trext.git",
