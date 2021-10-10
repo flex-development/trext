@@ -187,7 +187,6 @@ module.exports = {
     'unicorn/prefer-array-flat-map': 2,
     'unicorn/prefer-array-index-of': 2,
     'unicorn/prefer-array-some': 2,
-    'unicorn/prefer-at': 2,
     'unicorn/prefer-default-parameters': 2,
     'unicorn/prefer-includes': 2,
     'unicorn/prefer-module': 2,
