@@ -26,7 +26,7 @@ interface TrextOptions<F extends string = string, T extends string = string> {
   from: F
 
   /**
-   * File extension pattern.
+   * File extension search pattern.
    *
    * @default /\..+$/
    */
