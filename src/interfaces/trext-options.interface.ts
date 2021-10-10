@@ -16,7 +16,7 @@ interface TrextOptions<F extends string = string, T extends string = string> {
   /**
    * Babel transformation options.
    *
-   * @default {sourceMaps:true}
+   * @default {}
    */
   babel?: TransformOptions
 

@@ -6,11 +6,20 @@ import TestSubject from '../trextel.plugin'
  */
 
 describe('unit:plugins/Trextel', () => {
-  const Subject = new TestSubject({ from: 'js', to: 'mjs' })
+  const Subject = new TestSubject()
+
+  describe('get plugin', () => {
+    it('should return plugin object', () => {
+      expect(Subject.plugin).toStrictEqual({
+        name: Subject.name,
+        visitor: Subject.visitor
+      })
+    })
+  })
 
   describe('get visitor', () => {
     it('should return #CallExpression and #ImportDeclaration', () => {
-      expect(Subject.visitor).toMatchObject({
+      expect(Subject.visitor).toStrictEqual({
         CallExpression: Subject.CallExpression,
         ImportDeclaration: Subject.ImportDeclaration
       })

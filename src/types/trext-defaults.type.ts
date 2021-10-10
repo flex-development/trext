@@ -10,9 +10,7 @@ import type { TrextOptions } from '@trext/interfaces'
  */
 type TrextDefaults = {
   /** {@link TrextOptions#babel} */
-  babel: { sourceMaps: true } & Partial<
-    Record<keyof Omit<NonNullable<TrextOptions['babel']>, 'sourceMaps'>, never>
-  >
+  babel: Partial<Record<keyof NonNullable<TrextOptions['babel']>, never>>
 
   /** {@link TrextOptions#pattern} */
   pattern: Exclude<NonNullable<TrextOptions['pattern']>, string>

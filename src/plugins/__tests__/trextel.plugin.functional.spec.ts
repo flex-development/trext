@@ -8,7 +8,7 @@ import {
   stringLiteral
 } from '@babel/types'
 import type { Testcase } from '@tests/utils/types'
-import type { TrextOptions } from '@trext/interfaces'
+import type { TrextelState } from '@trext/interfaces'
 import pkg from '../../../package.json'
 import TestSubject from '../trextel.plugin'
 
@@ -24,46 +24,46 @@ describe('functional:plugins/Trextel', () => {
   describe('#CallExpression', () => {
     type Case = Testcase<Partial<Node>> & {
       _arguments: Parameters<typeof callExpression>[1]
-      options: TrextOptions
-      state: string
+      do: string
+      state: Pick<TrextelState, 'opts'>
     }
 
     const cases: Case[] = [
       {
         _arguments: [stringLiteral('./imported')],
+        do: 'add extension to relative require statement',
         expected: { value: './imported.cjs' },
-        options: { from: 'js', to: 'cjs' },
-        state: 'add extension to relative require statement'
+        state: { opts: { from: 'js', to: 'cjs' } }
       },
       {
         _arguments: [stringLiteral('./imported.js')],
+        do: 'change extension in relative require statement',
         expected: { value: './imported.cjs' },
-        options: { from: 'js', to: 'cjs' },
-        state: 'change extension in relative require statement'
+        state: { opts: { from: 'js', to: 'cjs' } }
       },
       {
         _arguments: [stringLiteral(pkg.name)],
+        do: 'not change extension in absolute require statement',
         expected: { value: pkg.name },
-        options: { from: 'js', to: 'mjs' },
-        state: 'not change extension in absolute require statement'
+        state: { opts: { from: 'js', to: 'mjs' } }
       },
       {
         _arguments: [callExpression(identifier('getPackageName'), [])],
+        do: 'not change extension if require is not string literal',
         expected: { arguments: [] },
-        options: { from: 'js', to: 'mjs' },
-        state: 'not change extension if require is not string literal'
+        state: { opts: { from: 'js', to: 'mjs' } }
       }
     ]
 
-    it.each<Case>(cases)('should $state', testcase => {
+    it.each<Case>(cases)('should $do', testcase => {
       // Arrange
-      const { _arguments, expected, options } = testcase
+      const { _arguments, expected, state } = testcase
       const nodePath = new NodePath<CallExpression>(HUB, PROGRAM_NODE)
       nodePath.node = callExpression(identifier('require'), _arguments)
       nodePath.container = PROGRAM_NODE
 
       // Act
-      new TestSubject(options).CallExpression(nodePath)
+      new TestSubject().CallExpression(nodePath, state as TrextelState)
 
       // Expect
       expect(nodePath.node.arguments[0]).toMatchObject(expected)
@@ -72,41 +72,41 @@ describe('functional:plugins/Trextel', () => {
 
   describe('#ImportDeclaration', () => {
     type Case = Testcase<Partial<Node>> & {
-      options: TrextOptions
+      do: string
       source: Parameters<typeof importDeclaration>[1]
-      state: string
+      state: Pick<TrextelState, 'opts'>
     }
 
     const cases: Case[] = [
       {
+        do: 'add extension to relative import declaration',
         expected: { value: './imported.mjs' },
-        options: { from: 'js', to: 'mjs' },
         source: stringLiteral('./imported'),
-        state: 'add extension to relative import declaration'
+        state: { opts: { from: 'js', to: 'mjs' } }
       },
       {
+        do: 'change extension in relative import declaration',
         expected: { value: './imported.banana.js' },
-        options: { from: 'js', to: 'banana.js' },
         source: stringLiteral('./imported.js'),
-        state: 'change extension in relative import declaration'
+        state: { opts: { from: 'js', to: 'banana.js' } }
       },
       {
+        do: 'not change extension in absolute import',
         expected: { value: pkg.name },
-        options: { from: 'js', to: 'cjs' },
         source: stringLiteral(pkg.name),
-        state: 'not change extension in absolute import'
+        state: { opts: { from: 'js', to: 'cjs' } }
       }
     ]
 
-    it.each<Case>(cases)('should $state', testcase => {
+    it.each<Case>(cases)('should $do', testcase => {
       // Arrange
-      const { expected, options, source } = testcase
+      const { expected, source, state } = testcase
       const nodePath = new NodePath<ImportDeclaration>(HUB, PROGRAM_NODE)
       nodePath.node = importDeclaration([], source)
       nodePath.container = PROGRAM_NODE
 
       // Act
-      new TestSubject(options).ImportDeclaration(nodePath)
+      new TestSubject().ImportDeclaration(nodePath, state as TrextelState)
 
       // Expect
       expect(nodePath.node.source).toMatchObject(expected)

@@ -1,8 +1,13 @@
-import * as babel from '@babel/core'
-import { PluginObj, PluginPass } from '@babel/core'
+import { PluginObj } from '@babel/core'
 import { NodePath, Visitor } from '@babel/traverse'
-import { CallExpression, ImportDeclaration } from '@babel/types'
-import { TrextOptions } from '@trext/interfaces'
+import {
+  CallExpression,
+  callExpression,
+  ImportDeclaration,
+  importDeclaration,
+  stringLiteral
+} from '@babel/types'
+import { TrextelState } from '@trext/interfaces'
 
 /**
  * @file Plugins - Trextel
@@ -15,52 +20,19 @@ import { TrextOptions } from '@trext/interfaces'
  * @template F - Old file extension name(s)
  * @template T - New file extension name(s)
  *
- * @implements {PluginObj<PluginPass>}
+ * @implements {PluginObj<TrextelState<F, T>>}
  *
  * [1]: https://github.com/jamiebuilds/babel-handbook/blob/master/translations/en/plugin-handbook.md
  */
 class Trextel<F extends string = string, T extends string = string>
-  implements PluginObj<PluginPass>
+  implements PluginObj<TrextelState<F, T>>
 {
   /**
    * @readonly
    * @instance
-   * @property {RegExp} $from - Input extension with special characters escaped
+   * @property {TrextelState<F, T>.key} name - Plugin name
    */
-  readonly $from: RegExp
-
-  /**
-   * @readonly
-   * @instance
-   * @property {typeof babel} core - `@babel/core` library
-   */
-  readonly core: typeof babel
-
-  /**
-   * @readonly
-   * @instance
-   * @property {TrextOptions<F, T>} core - Trext options
-   */
-  readonly options: TrextOptions<F, T>
-
-  /**
-   * @readonly
-   * @instance
-   * @property {string} name - Plugin name
-   */
-  readonly name: string = 'Trextel'
-
-  /**
-   * Returns a custom Babel file transformer plugin.
-   *
-   * @param {TrextOptions<F,T>} options - Trext options
-   * @param {typeof babel} [core=babel] - `@babel/core` library
-   */
-  constructor(options: TrextOptions<F, T>, core: typeof babel = babel) {
-    this.$from = new RegExp(`\.${Trextel.escapeSpecials(options.from)}$|$`)
-    this.core = core
-    this.options = options
-  }
+  readonly name: TrextelState<F, T>['key'] = 'Trextel'
 
   /**
    * Escapes special characters in `value`.
@@ -76,44 +48,45 @@ class Trextel<F extends string = string, T extends string = string>
    * Transforms call expressions to use `options.to`.
    *
    * @param {NodePath<CallExpression>} nodePath - Current node path
-   * @return {[NodePath<CallExpression>] | []} New node array
+   * @param {TrextelState<F, T>} state - Plugin state
+   * @return {void} Nothing when complete
    */
   CallExpression(
-    nodePath: NodePath<CallExpression>
-  ): [NodePath<CallExpression>] | [] {
+    nodePath: NodePath<CallExpression>,
+    state: TrextelState<F, T>
+  ): void {
     // Get call expression node and callee
     const node = nodePath.node
     const callee = node.callee
     const { name, type } = node.callee as Record<'name' | 'type', string>
 
     // Filter out callee by name or type
-    if (type !== 'Identifier' || name !== 'require') return []
+    if (type !== 'Identifier' || name !== 'require') return
 
     // Get first argument passed
     const nargs = node.arguments
     const arg = nargs[0]
 
     // Do nothing for multiple args or if handling a non-string literal
-    if (nargs.length !== 1 || arg.type !== 'StringLiteral') return []
+    if (nargs.length !== 1 || arg.type !== 'StringLiteral') return
 
     // Ignore absolute imports
-    if (!/^\./.test(arg.value)) return []
+    if (!/^\./.test(arg.value)) return
 
     // Get output extension
-    const to = this.options.to
+    const to = state.opts.to
     let $to = typeof to === 'function' ? to(nodePath) : to
     if (!$to.startsWith('.')) $to = `.${$to}`
 
     // Ignore already converted extensions
-    if (new RegExp(`\.${Trextel.escapeSpecials($to)}$`).test(arg.value)) {
-      return []
-    }
+    if (new RegExp(`\.${Trextel.escapeSpecials($to)}$`).test(arg.value)) return
+
+    // Escape special characters in input extension
+    const $from = new RegExp(`\.${Trextel.escapeSpecials(state.opts.from)}$|$`)
 
     // Transform call expression
-    return nodePath.replaceWith(
-      this.core.types.callExpression(callee, [
-        this.core.types.stringLiteral(arg.value.replace(this.$from, $to))
-      ])
+    nodePath.replaceWith(
+      callExpression(callee, [stringLiteral(arg.value.replace($from, $to))])
     )
   }
 
@@ -121,41 +94,55 @@ class Trextel<F extends string = string, T extends string = string>
    * Transforms import statements to use `options.to`.
    *
    * @param {NodePath<ImportDeclaration>} nodePath - Current node path
-   * @return {[NodePath<ImportDeclaration>] | []} New node array
+   * @param {TrextelState<F, T>} state - Plugin state
+   * @return {void} Nothing when complete
    */
   ImportDeclaration(
-    nodePath: NodePath<ImportDeclaration>
-  ): [NodePath<ImportDeclaration>] | [] {
+    nodePath: NodePath<ImportDeclaration>,
+    state: TrextelState<F, T>
+  ): void {
     // Get import declaration node and source code
     const node = nodePath.node
     const code = node.source.value
 
     // Ignore absolute imports
-    if (!/^\./.test(code)) return []
+    if (!/^\./.test(code)) return
 
     // Get output extension
-    const to = this.options.to
+    const to = state.opts.to
     let $to = typeof to === 'function' ? to(nodePath) : to
     if (!$to.startsWith('.')) $to = `.${$to}`
 
     // Ignore already converted extensions
-    if (new RegExp(`\.${Trextel.escapeSpecials($to)}$`).test(code)) return []
+    if (new RegExp(`\.${Trextel.escapeSpecials($to)}$`).test(code)) return
+
+    // Escape special characters in input extension
+    const $from = new RegExp(`\.${Trextel.escapeSpecials(state.opts.from)}$|$`)
 
     // Transform import statement
-    return nodePath.replaceWith(
-      this.core.types.importDeclaration(
+    nodePath.replaceWith(
+      importDeclaration(
         node.specifiers,
-        this.core.types.stringLiteral(code.replace(this.$from, $to))
+        stringLiteral(code.replace($from, $to))
       )
     )
   }
 
   /**
+   * Returns the plugin object.
+   *
+   * @return {PluginObj<TrextelState<F, T>>} Plugin object
+   */
+  get plugin(): PluginObj<TrextelState<F, T>> {
+    return { name: this.name, visitor: this.visitor }
+  }
+
+  /**
    * Returns the plugin [visitor][1].
    *
-   * @return {Visitor<PluginPass>} Plugin visitor
+   * @return {Visitor<TrextelState<F, T>>} Plugin visitor
    */
-  get visitor(): Visitor<PluginPass> {
+  get visitor(): Visitor<TrextelState<F, T>> {
     return {
       CallExpression: this.CallExpression,
       ImportDeclaration: this.ImportDeclaration

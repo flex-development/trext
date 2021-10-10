@@ -6,7 +6,7 @@ import type { TrextDefaults } from '@trext/types'
  */
 
 const DEFAULTS: TrextDefaults = {
-  babel: { sourceMaps: true },
+  babel: {},
   pattern: /\..+$/
 }
 

@@ -5,7 +5,5 @@
 
 export { default as TREXT_DEFAULTS } from './config/defaults.config'
 export * from './interfaces'
-export { default as Trext } from './trext'
+export { default as Trext, trext, trextFile } from './plugins/trext.plugin'
 export * from './types'
-
-export default {}

@@ -2,6 +2,7 @@
 
 import logger from '@flex-development/grease/utils/logger.util'
 import LogLevel from '@flex-development/log/enums/log-level.enum'
+import { trext } from '@trext/plugins/trext.plugin'
 import ncc from '@vercel/ncc'
 import fs from 'fs-extra'
 import path from 'path'
@@ -211,15 +212,21 @@ async function build(): Promise<void> {
       fixNodeModulePaths()
 
       if (format !== 'types') {
-        // Get output extension
-        const ext = `${format === 'cjs' ? 'c' : 'm'}js`
+        // Get trext options
+        const trext_options = {
+          babel: { sourceMaps: 'inline' as const },
+          from: 'js',
+          pattern: /.js$/,
+          to: `${format === 'cjs' ? 'c' : 'm'}js`
+        }
 
-        // TODO: Convert TypeScript output to .cjs or .mjs
-        logger(argv, `use .${ext} extensions`)
+        // Convert TypeScript output to .cjs or .mjs
+        !argv.dryRun && (await trext(`${format}/`, trext_options))
+        logger(argv, `use .${trext_options.to} extensions`)
 
         // Create bundles
         const BUNDLES = BUNDLE_NAMES.map(async name => {
-          const bundle = `${format}/${name}.${ext}`
+          const bundle = `${format}/${name}.${trext_options.to}`
           const filename = 'src/index.ts'
           const minify = path.extname(name) === '.min'
 
