@@ -512,8 +512,8 @@ __metadata:
   linkType: hard
 
 "@commitlint/load@npm:^13.2.0":
-  version: 13.2.0
-  resolution: "@commitlint/load@npm:13.2.0"
+  version: 13.2.1
+  resolution: "@commitlint/load@npm:13.2.1"
   dependencies:
     "@commitlint/execute-rule": ^13.2.0
     "@commitlint/resolve-extends": ^13.2.0
@@ -523,7 +523,8 @@ __metadata:
     cosmiconfig: ^7.0.0
     lodash: ^4.17.19
     resolve-from: ^5.0.0
-  checksum: e7eb39679547b460bffaee41d23cda8be158d07fdaed53ac996eab6f917db13546fd5b90a4f2e359d04aec036f6a169cf4153a0be3f711996683c5ca0c947766
+    typescript: ^4.4.3
+  checksum: e64c32ab9f461daa6e389b613546ca3a57bac381dd57fa1252674cdbbb9c65ae4fac10f787ff305008fef9b4ea218ccfe8db09cbc716622a5695a85f1a8b5f35
   languageName: node
   linkType: hard
 
@@ -788,8 +789,9 @@ __metadata:
     "@tests/utils": "link:__tests__/utils"
     "@trext/config": "link:src/config"
     "@trext/interfaces": "link:src/interfaces"
-    "@trext/trext": "link:src/trext"
+    "@trext/plugins": "link:src/plugins"
     "@trext/types": "link:src/types"
+    "@trext/utils": "link:src/utils"
     "@types/babel__core": 7.1.16
     "@types/fs-extra": 9.0.13
     "@types/glob": 7.1.4
@@ -1500,15 +1502,21 @@ __metadata:
   languageName: node
   linkType: soft
 
-"@trext/trext@link:src/trext::locator=%40flex-development%2Ftrext%40workspace%3A.":
+"@trext/plugins@link:src/plugins::locator=%40flex-development%2Ftrext%40workspace%3A.":
   version: 0.0.0-use.local
-  resolution: "@trext/trext@link:src/trext::locator=%40flex-development%2Ftrext%40workspace%3A."
+  resolution: "@trext/plugins@link:src/plugins::locator=%40flex-development%2Ftrext%40workspace%3A."
   languageName: node
   linkType: soft
 
 "@trext/types@link:src/types::locator=%40flex-development%2Ftrext%40workspace%3A.":
   version: 0.0.0-use.local
   resolution: "@trext/types@link:src/types::locator=%40flex-development%2Ftrext%40workspace%3A."
+  languageName: node
+  linkType: soft
+
+"@trext/utils@link:src/utils::locator=%40flex-development%2Ftrext%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@trext/utils@link:src/utils::locator=%40flex-development%2Ftrext%40workspace%3A."
   languageName: node
   linkType: soft
 
@@ -3709,9 +3717,9 @@ __metadata:
   linkType: hard
 
 "electron-to-chromium@npm:^1.3.857":
-  version: 1.3.863
-  resolution: "electron-to-chromium@npm:1.3.863"
-  checksum: 76760a98478b5ffd2dff3536ba71e5059a1c608892380a5195915c80a86c4fe81fff629e17b88acb7b71344af1240f1bffa4b79780f6364c12715f96d97fc813
+  version: 1.3.864
+  resolution: "electron-to-chromium@npm:1.3.864"
+  checksum: a3405aa5d1ce5af0da9b2c5fff9da9aeaa49d9aafc2a3046a7d448e438ef02a7ed10625a10b2eb6b6c3452d70f75f9b28c9ea3603f74b29cbdcdacd984927f69
   languageName: node
   linkType: hard
 
@@ -9622,7 +9630,7 @@ fsevents@^2.3.2:
   languageName: node
   linkType: hard
 
-typescript@4.4.3:
+"typescript@4.4.3, typescript@^4.4.3":
   version: 4.4.3
   resolution: "typescript@npm:4.4.3"
   bin:
@@ -9632,7 +9640,7 @@ typescript@4.4.3:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@4.4.3#~builtin<compat/typescript>":
+"typescript@patch:typescript@4.4.3#~builtin<compat/typescript>, typescript@patch:typescript@^4.4.3#~builtin<compat/typescript>":
   version: 4.4.3
   resolution: "typescript@patch:typescript@npm%3A4.4.3#~builtin<compat/typescript>::version=4.4.3&hash=32657b"
   bin:
