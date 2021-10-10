@@ -1,6 +1,6 @@
 {
   "name": "@flex-development/trext",
-  "description": "File extension and import statement transformer",
+  "description": "File extension transformer",
   "version": "1.0.0",
   "keywords": [
     "babel",
