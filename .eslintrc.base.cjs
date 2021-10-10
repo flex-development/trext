@@ -134,6 +134,7 @@ module.exports = {
           'ttsc',
           'typeof',
           'usr',
+          'utf',
           'wasm',
           'wip',
           'yargs'

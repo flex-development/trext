@@ -19,6 +19,7 @@ module.exports = {
           ...RULES_SPELLCHECKER[1].skipWords,
           'callee',
           'errno',
+          'filenames',
           'trext',
           'trextel'
         ]
@@ -28,7 +29,10 @@ module.exports = {
   overrides: [
     ...overrides,
     {
-      files: ['src/plugins/trextel.plugin.ts'],
+      files: [
+        '__tests__/__fixtures__/trext-file-result.fixture.ts',
+        'src/plugins/trextel.plugin.ts'
+      ],
       rules: {
         'no-useless-escape': 0
       }
