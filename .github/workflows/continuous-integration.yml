@@ -42,7 +42,7 @@ jobs:
           NODE_AUTH_TOKEN: ${PAT_GPR}
       - id: env
         name: Set environment variables
-        run: node_modules/.bin/loadenv -gc=test
+        run: node ./tools/cli/loadenv.cjs -gc=test
       - id: check-format
         name: Check code formatting
         run: yarn check:format

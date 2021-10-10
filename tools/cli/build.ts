@@ -112,9 +112,6 @@ const CWD: string = process.cwd()
 /** @property {string[]} ENV_CHOICES - Build environment options */
 const ENV_CHOICES: BuildOptions['env'][] = ['production', 'test', 'development']
 
-/** @property {string} PWD - Root project working directory */
-const PWD: string = process.env.PROJECT_CWD as string
-
 /** @property {Argv<BuildOptions>} args - CLI arguments parser */
 const args = yargs(hideBin(process.argv))
   .usage('$0 [options]')
@@ -189,7 +186,7 @@ async function build(): Promise<void> {
 
   try {
     // Set environment variables
-    exec(`node ${PWD}/tools/cli/loadenv.cjs -c ${argv.env}`, argv.dryRun)
+    exec(`node ./tools/cli/loadenv.cjs -c ${argv.env}`, argv.dryRun)
     logger(argv, `set ${argv.env} environment variables`)
 
     // Build project, convert output extensions, create bundles

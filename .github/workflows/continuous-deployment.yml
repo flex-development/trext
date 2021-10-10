@@ -110,15 +110,13 @@ jobs:
           NODE_AUTH_TOKEN: ${{ env.PAT_GPR }}
       - id: env
         name: Set environment variables
-        working-directory: ${{ needs.deployment-info.outputs.directory }}
-        run: node_modules/.bin/loadenv -gc=production
+        run: node ./tools/cli/loadenv.cjs -gc=production
       - id: build
         name: Build project
         working-directory: ${{ needs.deployment-info.outputs.directory }}
         run: yarn build --tarball
       - id: unset-node-options
         name: Unset NODE_OPTIONS
-        working-directory: ${{ needs.deployment-info.outputs.directory }}
         run: echo "NODE_OPTIONS=''" >> $GITHUB_ENV
       - id: publish-to-gpr
         name: Publish package [GPR]
