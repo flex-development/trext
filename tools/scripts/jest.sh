@@ -2,7 +2,7 @@
 
 # Testing Workflow
 #
-# Refernces:
+# References:
 #
 # - https://jestjs.io/docs/next/cli
 # - https://github.com/hipstersmoothie/jest-github-reporter
