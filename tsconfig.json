@@ -24,6 +24,8 @@
       ],
       "@flex-development/log": ["node_modules/@flex-development/log/esm/index"],
       "@flex-development/log/*": ["node_modules/@flex-development/log/esm/*"],
+      "@flex-development/trext": ["src/index.ts"],
+      "@flex-development/trext/*": ["src/*"],
       "@tests/fixtures/*": ["__tests__/__fixtures__/*"],
       "@tests/*": ["__tests__/*"],
       "@trext": ["src/index.ts"],
