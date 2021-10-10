@@ -13,11 +13,14 @@ File extension transformer
 [Usage](#usage)  
 [Usage](#usage)  
 [Built With](#built-with)  
+[Inspired By](#inspired-by)  
 [Contributing](CONTRIBUTING.md)
 
 ## Getting Started
 
-Transform file extensions and import statements.
+Interested in using `.cjs` and `.mjs` file extensions, but _not_ in setting up
+another build workflow? Use `trext` to transform file extensions, import
+statements, call expressions, and even source map comments!
 
 ## Installation
 
@@ -40,7 +43,12 @@ yarn add -D @flex-development/trext # or npm i -D @flex-development/trext
 
 ## Inspired By
 
-- [convert-extension][5]
+### [convert-extension][5]
+
+The `trext` library is heavily inspired by `convert-extension`, but intends to
+allow for a more configurable user experience. Unlike `convert-extension`,
+`trext` allow maintainers to specify custom file extension search patterns and
+dynamically generate file extensions.
 
 [1]: https://github.com/babel/babel/tree/main/packages/babel-core
 [2]: https://github.com/babel/babel/tree/main/packages/babel-traverse
