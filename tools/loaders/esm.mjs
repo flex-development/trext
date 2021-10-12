@@ -1,6 +1,11 @@
 import fs from 'fs-extra'
 import path from 'path'
 import { getFormat as getFormatTs, resolve as resolveTs } from 'ts-node/esm'
+import {
+  install as tsPatch,
+  parseFiles as parse,
+  SRC_FILES as TSRC
+} from 'ts-patch/lib/actions'
 import { createMatchPath, loadConfig } from 'tsconfig-paths'
 import useDualExports from '../helpers/use-dual-exports.mjs'
 
@@ -12,9 +17,16 @@ import useDualExports from '../helpers/use-dual-exports.mjs'
 
 /** @typedef {'builtin'|'commonjs'|'dynamic'|'json'|'module'|'wasm'} Format */
 
+const NODE_MODULES = process.env.NODE_MODULES
+const { patchVersion } = parse(TSRC, `${NODE_MODULES}/typescript/lib`)[0]
+
 // ! Add ESM-compatible export statement to `exports.default` statements
 // ! Fixes: `TypeError: logger is not a function`
-useDualExports([`${process.env.NODE_MODULES}/@flex-development/grease/cjs/**`])
+useDualExports([`${NODE_MODULES}/@flex-development/grease/cjs/**`])
+
+// Use TypeScript plugins
+// See: https://github.com/nonara/ts-patch
+if (!patchVersion) tsPatch()
 
 /**
  * ESM requires all imported files to have extensions. Unfortunately, most `bin`

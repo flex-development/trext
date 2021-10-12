@@ -199,7 +199,7 @@ async function build(): Promise<void> {
       logger(argv, `remove stale ${format} directory`)
 
       // Run build command
-      if (exec(`ttsc -p ${tsconfig}`, argv.dryRun) || argv.dryRun) {
+      if (exec(`tsc -p ${tsconfig}`, argv.dryRun) || argv.dryRun) {
         // ! Add ESM-compatible export statement to `exports.default` statements
         if (format === 'cjs') useDualExports([`./${format}/**`] as never[])
         logger(argv, `build ${format}`)
