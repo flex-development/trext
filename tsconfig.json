@@ -24,11 +24,11 @@
       ],
       "@flex-development/log": ["node_modules/@flex-development/log/esm/index"],
       "@flex-development/log/*": ["node_modules/@flex-development/log/esm/*"],
-      "@flex-development/trext": ["src/index.ts"],
+      "@flex-development/trext": ["src/index"],
       "@flex-development/trext/*": ["src/*"],
       "@tests/fixtures/*": ["__tests__/__fixtures__/*"],
       "@tests/*": ["__tests__/*"],
-      "@trext": ["src/index.ts"],
+      "@trext": ["src/index"],
       "@trext/*": ["src/*"]
     },
     "preserveConstEnums": true,
@@ -43,7 +43,7 @@
   },
   "exclude": ["**/node_modules", "./build", "./cjs", "./esm", "./types"],
   "files": ["typings/jest.d.ts"],
-  "include": ["**/*.cjs", "**/.*.cjs", "**/*.mjs", "**/*.ts", "**/.*.ts"],
+  "include": ["**/*.cjs", "**/*.mjs", "**/*.ts", "**/.*.cjs", "**/.*.ts"],
   "ts-node": {
     "moduleTypes": {
       ".commitlintrc.ts": "cjs",

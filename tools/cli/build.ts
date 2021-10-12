@@ -2,19 +2,24 @@
 
 import logger from '@flex-development/grease/utils/logger.util'
 import LogLevel from '@flex-development/log/enums/log-level.enum'
-import { trext } from '@trext/plugins/trext.plugin'
+import type { TrextOptions } from '@flex-development/trext'
+import { trext } from '@flex-development/trext'
 import ncc from '@vercel/ncc'
 import fs from 'fs-extra'
 import path from 'path'
 import replace from 'replace-in-file'
 import sh from 'shelljs'
+import type { BuildOptions as TsBuildOptions, TsConfig } from 'tsc-prog'
+import tsc from 'tsc-prog'
+import { loadSync as tsconfigLoad } from 'tsconfig/dist/tsconfig'
 import type { Argv } from 'yargs'
 import yargs from 'yargs'
 import { hideBin } from 'yargs/helpers'
 import exec from '../helpers/exec'
-import fixNodeModulePaths from '../helpers/fix-node-module-paths'
-import { $PACKAGE, $WORKSPACE, $WORKSPACE_NO_SCOPE } from '../helpers/pkg'
-// @ts-expect-error TS2307
+import fixImportPaths from '../helpers/fix-import-paths'
+import { $PACKAGE, $WNS, $WORKSPACE } from '../helpers/pkg'
+import tsconfigCascade from '../helpers/tsconfig-cascade'
+// @ts-expect-error ts(2307)
 import useDualExports from '../helpers/use-dual-exports.mjs'
 
 /**
@@ -24,14 +29,14 @@ import useDualExports from '../helpers/use-dual-exports.mjs'
 
 export type BuildOptions = {
   /**
-   * Name of build environment.
+   * Remove stale build directories.
    *
-   * @default 'production'
+   * @default true
    */
-  env?: 'development' | 'production' | 'test'
+  clean?: boolean
 
-  /** @see BuildOptions.env */
-  e?: BuildOptions['env']
+  /** @see BuildOptions.clean */
+  c?: BuildOptions['clean']
 
   /**
    * See the commands that running `build` would run.
@@ -42,6 +47,16 @@ export type BuildOptions = {
 
   /** @see BuildOptions.dryRun */
   d?: BuildOptions['dryRun']
+
+  /**
+   * Name of build environment.
+   *
+   * @default 'production'
+   */
+  env?: 'development' | 'production' | 'test'
+
+  /** @see BuildOptions.env */
+  e?: BuildOptions['env']
 
   /**
    * Specify module build formats.
@@ -97,37 +112,34 @@ export type BuildOptions = {
 /** @property {string[]} BUILD_FORMATS - Module build formats */
 const BUILD_FORMATS: BuildOptions['formats'] = ['cjs', 'esm', 'types']
 
-/** @property {string[]} BUNDLE_NAMES - Partial bundle names */
-const BUNDLE_NAMES: string[] = [
-  $WORKSPACE_NO_SCOPE,
-  `${$WORKSPACE_NO_SCOPE}.min`
-]
-
 /** @property {string} COMMAND_PACK - Base pack command */
 const COMMAND_PACK: string = 'yarn pack'
 
 /** @property {string} CWD - Current working directory */
 const CWD: string = process.cwd()
 
-/** @property {string[]} ENV_CHOICES - Build environment options */
-const ENV_CHOICES: BuildOptions['env'][] = ['production', 'test', 'development']
-
 /** @property {Argv<BuildOptions>} args - CLI arguments parser */
 const args = yargs(hideBin(process.argv))
   .usage('$0 [options]')
-  .option('env', {
-    alias: 'e',
-    choices: ENV_CHOICES,
-    default: 'production',
-    describe: 'name of build environment',
-    requiresArg: true,
-    type: 'string'
+  .option('clean', {
+    alias: 'c',
+    default: true,
+    describe: 'remove stale build directories',
+    type: 'boolean'
   })
   .option('dryRun', {
     alias: 'd',
     default: false,
     describe: 'see the commands that running `build` would run',
     type: 'boolean'
+  })
+  .option('env', {
+    alias: 'e',
+    choices: ['production', 'test', 'development'],
+    default: 'production',
+    describe: 'name of build environment',
+    requiresArg: true,
+    type: 'string'
   })
   .option('formats', {
     alias: 'f',
@@ -176,11 +188,13 @@ const argv = args.argv as BuildOptions
  * @return {Promise<void>} Empty promise when complete
  */
 async function build(): Promise<void> {
+  const { dryRun, env, formats = [], tarball } = argv
+
   // Log workflow start
   logger(
     argv,
     'starting build workflow',
-    [$WORKSPACE, `[dry=${argv.dryRun}]`],
+    [$WORKSPACE, `[dry=${dryRun}]`],
     LogLevel.INFO
   )
 
@@ -190,27 +204,38 @@ async function build(): Promise<void> {
     logger(argv, `set ${argv.env} environment variables`)
 
     // Build project, convert output extensions, create bundles
-    for (const format of argv.formats ?? []) {
-      // Get tsconfig config file
-      const tsconfig: string = `tsconfig.prod.${format}.json`
+    for (const format of formats) {
+      // Get build options
+      // See: https://github.com/jeremyben/tsc-prog
+      const options: TsBuildOptions = {
+        ...((): TsConfig => {
+          const { compilerOptions, exclude } = tsconfigCascade([
+            [CWD, 'json'],
+            [CWD, 'prod.json'],
+            [CWD, `prod.${format}.json`]
+          ])
 
-      // Remove stale directory
-      exec(`rimraf ${format}`, argv.dryRun)
-      logger(argv, `remove stale ${format} directory`)
-
-      // Run build command
-      if (exec(`tsc -p ${tsconfig}`, argv.dryRun) || argv.dryRun) {
-        // ! Add ESM-compatible export statement to `exports.default` statements
-        if (format === 'cjs') useDualExports([`./${format}/**`] as never[])
-        logger(argv, `build ${format}`)
+          return {
+            compilerOptions,
+            exclude,
+            include: tsconfigLoad(CWD, 'tsconfig.prod.json').config.include
+          }
+        })(),
+        basePath: CWD,
+        clean: { outDir: argv.clean || undefined }
       }
 
+      // Build project
+      !dryRun && tsc.build(options)
+      !dryRun && format === 'cjs' && useDualExports(`./${format}/**`)
+      dryRun && logger(argv, `build ${format}`)
+
       // Fix node module import paths
-      fixNodeModulePaths()
+      fixImportPaths()
 
       if (format !== 'types') {
-        // Get trext options
-        const trext_options = {
+        // Get extension transformation options
+        const trext_opts: TrextOptions<'js', 'cjs' | 'mjs'> = {
           babel: { sourceMaps: 'inline' as const },
           from: 'js',
           pattern: /.js$/,
@@ -218,24 +243,25 @@ async function build(): Promise<void> {
         }
 
         // Convert TypeScript output to .cjs or .mjs
-        !argv.dryRun && (await trext(`${format}/`, trext_options))
-        logger(argv, `use .${trext_options.to} extensions`)
+        !dryRun && (await trext<'js' | 'cjs' | 'mjs'>(`${format}/`, trext_opts))
+        logger(argv, `use .${trext_opts.to} extensions`)
 
         // Create bundles
-        const BUNDLES = BUNDLE_NAMES.map(async name => {
-          const bundle = `${format}/${name}.${trext_options.to}`
-          const filename = 'src/index.ts'
+        // See: https://github.com/vercel/ncc
+        const BUNDLES = [$WNS, `${$WNS}.min`].map(async name => {
+          const bundle = `${format}/${name}.${trext_opts.to}`
+          const filename = `${format}/index.${trext_opts.to}`
           const minify = path.extname(name) === '.min'
 
-          if (!argv.dryRun) {
+          if (!dryRun) {
             const { code } = await ncc(`${CWD}/${filename}`, {
               esm: format === 'esm',
               externals: Object.keys($PACKAGE?.peerDependencies ?? {}),
               filename,
               minify: minify,
-              production: argv.env === 'production',
+              production: env === 'production',
               quiet: true,
-              target: format === 'cjs' ? 'es5' : 'es2020'
+              target: options.compilerOptions?.target
             })
 
             await fs.writeFile(bundle, code, { flag: 'wx+' })
@@ -256,8 +282,8 @@ async function build(): Promise<void> {
     }
 
     // Pack project
-    if (argv.tarball) {
-      const { dryRun, out: outFile, install, prepack } = argv
+    if (tarball) {
+      const { install, out: outFile, prepack } = argv
 
       // Pack command flags
       const flags = [
