@@ -7,8 +7,10 @@ import {
   importDeclaration,
   stringLiteral
 } from '@babel/types'
+import DEFAULTS from '@trext/config/defaults.config'
 import { TrextelState } from '@trext/interfaces'
 import { TrextNodePath } from '@trext/types'
+import { isDirectorySync as isDirectory } from 'path-type'
 
 /**
  * @file Plugins - Trextel
@@ -69,14 +71,19 @@ class Trextel<F extends string = string, T extends string = string>
       type
     } = node as Record<string, any>
 
+    // Get user options
+    const { from, src, to } = { ...DEFAULTS, ...state.opts }
+
     // Get source code
     const code: string = (type === 'CallExpression' ? args[0] : source).value
+
+    // Ignore directory entry points
+    if (isDirectory(`${src}${code.slice(code.indexOf('/'))}`)) return
 
     // Ignore absolute imports
     if (!/^\./.test(code)) return
 
     // Get output extension
-    const to = state.opts.to
     let $to = typeof to === 'function' ? to(nodePath) : to
     if (!$to.startsWith('.')) $to = `.${$to}`
 
@@ -84,7 +91,7 @@ class Trextel<F extends string = string, T extends string = string>
     if (new RegExp(`\.${Trextel.escapeSpecials($to)}$`).test(code)) return
 
     // Escape special characters in input extension
-    const $from = new RegExp(`\.${Trextel.escapeSpecials(state.opts.from)}$|$`)
+    const $from = new RegExp(`\.${Trextel.escapeSpecials(from)}$|$`)
 
     // Create string literal
     const $code = stringLiteral(code.replace($from, $to))

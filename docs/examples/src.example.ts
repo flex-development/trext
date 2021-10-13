@@ -3,15 +3,17 @@ import { trext } from '@flex-development/trext'
 import { inspect } from 'util'
 
 /**
- * @file Examples - Basic Usage
- * @module docs/examples/basic
+ * @file Examples - Ignoring Directory Indexes
+ * @module docs/examples/src
  */
 
-const TREXT_OPTIONS: TrextOptions<'js', 'mjs'> = {
+const TREXT_OPTIONS: TrextOptions<'js', 'cjs'> = {
   from: 'js',
-  to: 'mjs'
+  pattern: /.js$/,
+  src: 'lib',
+  to: 'cjs'
 }
 
-trext('esm/', TREXT_OPTIONS)
+trext('cjs/', TREXT_OPTIONS)
   .then(results => console.info(inspect(results, false, null)))
   .catch(error => console.error(inspect(error, false, null)))

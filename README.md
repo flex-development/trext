@@ -55,7 +55,7 @@ const TREXT_OPTIONS: TrextOptions<'js', 'mjs'> = {
   to: 'mjs'
 }
 
-trext('esm', TREXT_OPTIONS)
+trext('esm/', TREXT_OPTIONS)
   .then(results => console.info(inspect(results, false, null)))
   .catch(error => console.error(inspect(error, false, null)))
 ```
@@ -170,6 +170,52 @@ const TREXT_OPTIONS: TrextOptions<'js', 'mjs'> = {
 }
 
 trext('esm/', TREXT_OPTIONS)
+  .then(results => console.info(inspect(results, false, null)))
+  .catch(error => console.error(inspect(error, false, null)))
+```
+
+#### Ignoring Directory Indexes
+
+Directory entry points are a common way of exposing a series of modules from a
+single `index.*` file. Directory index syntax allows developers to `import` and
+`require` those entries without including `/index.*` in the module specifier:
+
+```typescript
+/**
+ * @file Package Entry Point
+ * @module trext
+ */
+
+export { default as TREXT_DEFAULTS } from './config/defaults.config'
+export * from './interfaces'
+export { default as Trext, trext, trextFile } from './plugins/trext.plugin'
+export * from './types'
+```
+
+Specifiers `'./interfaces'` and `'./types'` use directory index syntax and
+**will be ignored** when encountered by [`Trextel`][6].
+
+By default, index lookups are performed in the `process.cwd()/src` directory.
+Set `src` to change the lookup location:
+
+```typescript
+import type { TrextOptions } from '@flex-development/trext'
+import { trext } from '@flex-development/trext'
+import { inspect } from 'util'
+
+/**
+ * @file Examples - Ignoring Directory Indexes
+ * @module docs/examples/src
+ */
+
+const TREXT_OPTIONS: TrextOptions<'js', 'cjs'> = {
+  from: 'js',
+  pattern: /.js$/,
+  src: 'lib',
+  to: 'cjs'
+}
+
+trext('cjs/', TREXT_OPTIONS)
   .then(results => console.info(inspect(results, false, null)))
   .catch(error => console.error(inspect(error, false, null)))
 ```

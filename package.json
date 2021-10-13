@@ -131,7 +131,8 @@
     "@babel/types": "7.15.6",
     "@types/babel__core": "7.1.16",
     "glob": "7.2.0",
-    "mkdirp": "1.0.4"
+    "mkdirp": "1.0.4",
+    "path-type": "5.0.0"
   },
   "devDependencies": {
     "@babel/eslint-parser": "7.15.8",
