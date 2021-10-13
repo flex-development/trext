@@ -7,7 +7,8 @@ import type { TrextDefaults } from '@trext/types'
 
 const DEFAULTS: TrextDefaults = {
   babel: {},
-  pattern: /\..+$/
+  pattern: /\..+$/,
+  src: `${process.cwd()}/src`
 }
 
 export default DEFAULTS

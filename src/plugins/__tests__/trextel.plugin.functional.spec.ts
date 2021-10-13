@@ -52,6 +52,12 @@ describe('functional:plugins/Trextel', () => {
         do: 'not change extension if require is not string literal',
         expected: { arguments: [] },
         state: { opts: { from: 'js', to: 'mjs' } }
+      },
+      {
+        _arguments: [stringLiteral('../interfaces')],
+        do: 'ignore require statement if require is directory entry point',
+        expected: { value: '../interfaces' },
+        state: { opts: { from: 'js', to: 'mjs' } }
       }
     ]
 
@@ -95,6 +101,12 @@ describe('functional:plugins/Trextel', () => {
         expected: { value: pkg.name },
         source: stringLiteral(pkg.name),
         state: { opts: { from: 'js', to: 'cjs' } }
+      },
+      {
+        do: 'ignore import declaration if import is directory entry point',
+        expected: { value: '../types' },
+        source: stringLiteral('../types'),
+        state: { opts: { from: 'js', to: 'mjs' } }
       }
     ]
 

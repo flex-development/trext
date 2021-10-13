@@ -33,6 +33,17 @@ interface TrextOptions<F extends string = string, T extends string = string> {
   pattern?: RegexString
 
   /**
+   * Directory where source files are located.
+   *
+   * Used to identify and ignore `import` and `require` statements that include
+   * directory entry points without a specifier or a `/index` suffix (i.e: `from
+   * './types'`, where `./types/index.*` is the file being imported).
+   *
+   * @default `${process.cwd()}/src`
+   */
+  src?: string
+
+  /**
    * New file extension or function that returns a file extension.
    *
    * @see {@link TrextTo}

@@ -7,7 +7,10 @@ import {
   importDeclaration,
   stringLiteral
 } from '@babel/types'
+import DEFAULTS from '@trext/config/defaults.config'
 import { TrextelState } from '@trext/interfaces'
+import { TrextNodePath } from '@trext/types'
+import { isDirectorySync as isDirectory } from 'path-type'
 
 /**
  * @file Plugins - Trextel
@@ -45,6 +48,70 @@ class Trextel<F extends string = string, T extends string = string>
   }
 
   /**
+   * Transforms call expressions and import statements to use `options.to`.
+   *
+   * @template F - Old file extension name(s)
+   * @template T - New file extension name(s)
+   *
+   * @param {TrextNodePath} nodePath - Current node path
+   * @param {TrextelState<F, T>} state - Plugin state
+   * @return {void} Nothing when complete
+   */
+  static transform<F extends string = string, T extends string = string>(
+    nodePath: TrextNodePath,
+    state: TrextelState<F, T>
+  ): TrextNodePath | void {
+    // Get node
+    let node = nodePath.node
+    const {
+      arguments: args,
+      callee,
+      source,
+      specifiers,
+      type
+    } = node as Record<string, any>
+
+    // Get user options
+    const { from, src, to } = { ...DEFAULTS, ...state.opts }
+
+    // Get source code
+    const code: string = (type === 'CallExpression' ? args[0] : source).value
+
+    // Ignore directory entry points
+    if (isDirectory(`${src}${code.slice(code.indexOf('/'))}`)) return
+
+    // Ignore absolute imports
+    if (!/^\./.test(code)) return
+
+    // Get output extension
+    let $to = typeof to === 'function' ? to(nodePath) : to
+    if (!$to.startsWith('.')) $to = `.${$to}`
+
+    // Ignore already converted extensions
+    if (new RegExp(`\.${Trextel.escapeSpecials($to)}$`).test(code)) return
+
+    // Escape special characters in input extension
+    const $from = new RegExp(`\.${Trextel.escapeSpecials(from)}$|$`)
+
+    // Create string literal
+    const $code = stringLiteral(code.replace($from, $to))
+
+    // Transform  call expression or import statement
+    switch (type) {
+      case 'CallExpression':
+        node = callExpression(callee, [$code])
+        break
+      case 'ImportDeclaration':
+        node = importDeclaration(specifiers, $code)
+        break
+      default:
+        break
+    }
+
+    nodePath.replaceWith(node)
+  }
+
+  /**
    * Transforms call expressions to use `options.to`.
    *
    * @param {NodePath<CallExpression>} nodePath - Current node path
@@ -55,39 +122,16 @@ class Trextel<F extends string = string, T extends string = string>
     nodePath: NodePath<CallExpression>,
     state: TrextelState<F, T>
   ): void {
-    // Get call expression node and callee
-    const node = nodePath.node
-    const callee = node.callee
-    const { name, type } = node.callee as Record<'name' | 'type', string>
+    const { arguments: args, callee } = nodePath.node
 
-    // Filter out callee by name or type
-    if (type !== 'Identifier' || name !== 'require') return
-
-    // Get first argument passed
-    const nargs = node.arguments
-    const arg = nargs[0]
+    // Filter out by callee name and type
+    if (callee.type !== 'Identifier' || callee.name !== 'require') return
 
     // Do nothing for multiple args or if handling a non-string literal
-    if (nargs.length !== 1 || arg.type !== 'StringLiteral') return
+    if (args.length !== 1 || args[0].type !== 'StringLiteral') return
 
-    // Ignore absolute imports
-    if (!/^\./.test(arg.value)) return
-
-    // Get output extension
-    const to = state.opts.to
-    let $to = typeof to === 'function' ? to(nodePath) : to
-    if (!$to.startsWith('.')) $to = `.${$to}`
-
-    // Ignore already converted extensions
-    if (new RegExp(`\.${Trextel.escapeSpecials($to)}$`).test(arg.value)) return
-
-    // Escape special characters in input extension
-    const $from = new RegExp(`\.${Trextel.escapeSpecials(state.opts.from)}$|$`)
-
-    // Transform call expression
-    nodePath.replaceWith(
-      callExpression(callee, [stringLiteral(arg.value.replace($from, $to))])
-    )
+    // Transform node
+    Trextel.transform(nodePath, state)
   }
 
   /**
@@ -101,31 +145,7 @@ class Trextel<F extends string = string, T extends string = string>
     nodePath: NodePath<ImportDeclaration>,
     state: TrextelState<F, T>
   ): void {
-    // Get import declaration node and source code
-    const node = nodePath.node
-    const code = node.source.value
-
-    // Ignore absolute imports
-    if (!/^\./.test(code)) return
-
-    // Get output extension
-    const to = state.opts.to
-    let $to = typeof to === 'function' ? to(nodePath) : to
-    if (!$to.startsWith('.')) $to = `.${$to}`
-
-    // Ignore already converted extensions
-    if (new RegExp(`\.${Trextel.escapeSpecials($to)}$`).test(code)) return
-
-    // Escape special characters in input extension
-    const $from = new RegExp(`\.${Trextel.escapeSpecials(state.opts.from)}$|$`)
-
-    // Transform import statement
-    nodePath.replaceWith(
-      importDeclaration(
-        node.specifiers,
-        stringLiteral(code.replace($from, $to))
-      )
-    )
+    Trextel.transform(nodePath, state)
   }
 
   /**

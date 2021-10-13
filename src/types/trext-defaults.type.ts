@@ -14,6 +14,9 @@ type TrextDefaults = {
 
   /** {@link TrextOptions#pattern} */
   pattern: Exclude<NonNullable<TrextOptions['pattern']>, string>
+
+  /** {@link TrextOptions#src} */
+  src: string
 }
 
 export default TrextDefaults
