@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.1](https://github.com/flex-development/trext/compare/trext@1.0.0...trext@1.0.1) (2021-10-13)
+
+
+### :pencil2: Housekeeping
+
+* **tools:** add `ts-patch`, drop `ttypescript` ([7c38efc](https://github.com/flex-development/trext/commit/7c38efc692f46475968615dfd01725e0cc030f21))
+* **tools:** add `tsc-prog` to build workflow ([a14fd44](https://github.com/flex-development/trext/commit/a14fd445c80d5e8b035411a37492245dad2ddbe2))
+
+
+### :bug: Fixes
+
+* ignore directory indexes ([#2](https://github.com/flex-development/trext/issues/2)) ([3313025](https://github.com/flex-development/trext/commit/3313025188ad91a7d1181ca21464aec01558274a))
+
 ## 1.0.0 (2021-10-10)
 
 
