@@ -225,7 +225,7 @@ async function build(): Promise<void> {
         clean: { outDir: argv.clean || undefined }
       }
 
-      // Build project
+      // Build project (type checking not available)
       !dryRun && tsc.build(options)
       !dryRun && format === 'cjs' && useDualExports(`./${format}/**`)
       dryRun && logger(argv, `build ${format}`)
@@ -242,23 +242,19 @@ async function build(): Promise<void> {
           to: `${format === 'cjs' ? 'c' : 'm'}js`
         }
 
-        // Convert TypeScript output to .cjs or .mjs
-        !dryRun && (await trext<'js' | 'cjs' | 'mjs'>(`${format}/`, trext_opts))
-        logger(argv, `use .${trext_opts.to} extensions`)
-
-        // Create bundles
+        // Create bundles (type checking enabled)
         // See: https://github.com/vercel/ncc
         const BUNDLES = [$WNS, `${$WNS}.min`].map(async name => {
           const bundle = `${format}/${name}.${trext_opts.to}`
-          const filename = `${format}/index.${trext_opts.to}`
-          const minify = path.extname(name) === '.min'
+          // ! Bundle source code to enable type checking
+          const filename = 'src/index.ts'
 
           if (!dryRun) {
             const { code } = await ncc(`${CWD}/${filename}`, {
               esm: format === 'esm',
               externals: Object.keys($PACKAGE?.peerDependencies ?? {}),
               filename,
-              minify: minify,
+              minify: path.extname(name) === '.min',
               production: env === 'production',
               quiet: true,
               target: options.compilerOptions?.target
@@ -268,8 +264,8 @@ async function build(): Promise<void> {
             await fs.copyFile(`${format}/index.d.ts`, `${format}/${name}.d.ts`)
             await replace.replaceInFile({
               files: bundle,
-              from: ';// CONCATENATED MODULE: ./src/',
-              to: ';// CONCATENATED MODULE: ../src/'
+              from: '// CONCATENATED MODULE: ./src/',
+              to: '// CONCATENATED MODULE: ../src/'
             })
           }
 
@@ -278,6 +274,10 @@ async function build(): Promise<void> {
 
         // Complete bundle promises
         logger(argv, `bundle ${format}`, await Promise.all(BUNDLES))
+
+        // Convert TypeScript output to .cjs or .mjs
+        !dryRun && (await trext<'js' | 'cjs' | 'mjs'>(`${format}/`, trext_opts))
+        logger(argv, `use .${trext_opts.to} extensions`)
       }
     }
 
