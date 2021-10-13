@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.2](https://github.com/flex-development/trext/compare/trext@1.0.1...trext@1.0.2) (2021-10-13)
+
+
+### :bug: Fixes
+
+* `require is not defined in ES module scope` ([bd718de](https://github.com/flex-development/trext/commit/bd718de092a57051ef67527cfba9853bef9a5418)), closes [#issuecomment-942454663](https://github.com/flex-development/trext/issues/issuecomment-942454663)
+
 ### [1.0.1](https://github.com/flex-development/trext/compare/trext@1.0.0...trext@1.0.1) (2021-10-13)
 
 
