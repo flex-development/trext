@@ -55,9 +55,15 @@ describe('functional:plugins/Trextel', () => {
       },
       {
         _arguments: [stringLiteral('../interfaces')],
-        do: 'ignore require statement if require is directory entry point',
+        do: 'ignore require statement if require is partial directory index',
         expected: { value: '../interfaces' },
-        state: { opts: { from: 'js', to: 'mjs' } }
+        state: { opts: { from: 'js', to: 'cjs' } }
+      },
+      {
+        _arguments: [stringLiteral('../utils/index.js')],
+        do: 'not ignore require statement if require is full directory index',
+        expected: { value: '../utils/index.cjs' },
+        state: { opts: { from: 'js', to: 'cjs' } }
       }
     ]
 
@@ -103,9 +109,15 @@ describe('functional:plugins/Trextel', () => {
         state: { opts: { from: 'js', to: 'cjs' } }
       },
       {
-        do: 'ignore import declaration if import is directory entry point',
+        do: 'ignore import declaration if import is partial directory index',
         expected: { value: '../types' },
         source: stringLiteral('../types'),
+        state: { opts: { from: 'js', to: 'mjs' } }
+      },
+      {
+        do: 'not ignore import declaration if import is full directory index',
+        expected: { value: './plugins/index.mjs' },
+        source: stringLiteral('./plugins/index.js'),
         state: { opts: { from: 'js', to: 'mjs' } }
       }
     ]
