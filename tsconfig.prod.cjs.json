@@ -1,5 +1,7 @@
 {
   "compilerOptions": {
+    "downlevelIteration": true,
+    "importHelpers": true,
     "module": "commonjs",
     "outDir": "./cjs",
     "paths": {
