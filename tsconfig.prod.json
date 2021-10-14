@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "declaration": true,
+    "declarationMap": true,
     "inlineSourceMap": true,
     "inlineSources": true,
     "noEmit": false,
