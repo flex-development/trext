@@ -352,6 +352,7 @@ Before releasing, the following steps must be completed:
      - publish package to the [GitHub Package Registry][19] and
      - update the production branch (merge branch `next` into `main`)
      - publish the drafted release
+     - delete the release branch
    - the maintainer who approved the PR should go through the PR's linked issues
      and:
      - make sure all issues are closed and have the label `status:merged`

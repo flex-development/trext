@@ -6,6 +6,7 @@
 # - https://github.com/actions/checkout
 # - https://github.com/actions/setup-node
 # - https://github.com/actions-registry/github-repo-sync-upstream
+# - https://github.com/dawidd6/action-delete-branch/tree/v3.1.0
 
 ---
 name: continuous-deployment
@@ -182,3 +183,14 @@ jobs:
                 tag_name: process.env.tag 
               })
             }
+  delete-release-branch:
+    name: Delete release branch
+    needs: [deployment-info, publish-release]
+    runs-on: ubuntu-latest
+    steps:
+      - id: delete
+        uses: dawidd6/action-delete-branch@v3.1.0
+        with:
+          branches: release/
+          github_token: ${{ github.token }}
+          suffix: ${{ needs.deployment-info.outputs.tag }}
