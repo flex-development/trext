@@ -124,11 +124,11 @@ class Trextel<F extends string = string, T extends string = string>
   ): void {
     const { arguments: args, callee } = nodePath.node
 
-    // Filter out by callee name and type
+    // Filter by callee name and type
     if (callee.type !== 'Identifier' || callee.name !== 'require') return
 
     // Do nothing for multiple args or if handling a non-string literal
-    if (args.length !== 1 || args[0].type !== 'StringLiteral') return
+    if (args.length !== 1 || args[0]?.type !== 'StringLiteral') return
 
     // Transform node
     Trextel.transform(nodePath, state)
