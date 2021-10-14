@@ -1,7 +1,7 @@
-import logger from '@flex-development/grease/utils/logger.util'
 import LogLevel from '@flex-development/log/enums/log-level.enum'
 import type { ChildProcess } from 'child_process'
 import sh from 'shelljs'
+import logger from './logger'
 
 /**
  * @file Helpers - Shell Command Executor
@@ -39,6 +39,7 @@ const exec = (
   if (stdout && stdout.code !== 0) {
     const error = new Error((stdout.stderr || stdout.stdout).toString())
     ;(error as any).code = stdout.code
+    ;(error as any).stderr = error.message
 
     throw error
   }

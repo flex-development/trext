@@ -6,12 +6,12 @@
     "checkJs": false,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-    "lib": ["es2021"],
-    "module": "es2020",
+    "lib": ["esnext"],
+    "module": "es2022",
     "moduleResolution": "node",
     "noEmit": true,
     "noFallthroughCasesInSwitch": true,
-    "noImplicitAny": false,
+    "noImplicitAny": true,
     "noImplicitReturns": true,
     "noUnusedLocals": false,
     "noUnusedParameters": false,
@@ -41,9 +41,17 @@
     // Node.js 15
     "target": "es2021"
   },
-  "exclude": ["**/node_modules", "./build", "./cjs", "./esm", "./types"],
+  "exclude": ["./build", "./cjs", "./esm", "./node_modules", "./types"],
   "files": ["typings/jest.d.ts"],
-  "include": ["**/*.cjs", "**/*.mjs", "**/*.ts", "**/.*.cjs", "**/.*.ts"],
+  "include": [
+    "**/*.cjs",
+    "**/*.cts",
+    "**/*.mjs",
+    "**/*.mts",
+    "**/*.ts",
+    "**/.*.cjs",
+    "**/.*.ts"
+  ],
   "ts-node": {
     "moduleTypes": {
       ".commitlintrc.ts": "cjs",

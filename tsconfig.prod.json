@@ -6,13 +6,6 @@
     "noEmit": false,
     "noEmitOnError": true,
     "outDir": "./build",
-    "plugins": [
-      {
-        "afterDeclarations": true,
-        "exclude": ["*"],
-        "transform": "@zerollup/ts-transform-paths"
-      }
-    ],
     "removeComments": false,
     "resolveJsonModule": false,
     "rootDir": "./src",
@@ -23,10 +16,10 @@
   "exclude": [
     "**/__mocks__",
     "**/__tests__",
-    "**/node_modules",
     "./build",
     "./cjs",
     "./esm",
+    "./node_modules",
     "./types"
   ],
   "extends": "./tsconfig.json",

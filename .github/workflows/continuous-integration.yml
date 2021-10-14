@@ -40,18 +40,21 @@ jobs:
         run: yarn --immutable
         env:
           NODE_AUTH_TOKEN: ${PAT_GPR}
-      - id: env
-        name: Set environment variables
-        run: node ./tools/cli/loadenv.cjs -gc=test
       - id: check-format
         name: Check code formatting
         run: yarn check:format
       - id: check-style
         name: Check code style
         run: yarn check:style --max-warnings 0
+      - id: check-types
+        name: Check types
+        run: yarn check:types
+      - id: env
+        name: Set build environment variables
+        run: node ./tools/cli/loadenv.ts -gc=test
       - id: check-build
         name: Check build
         run: yarn build --tarball
       - id: env-post
-        name: Post Set environment variables
+        name: Post Set build environment variables
         run: echo "NODE_OPTIONS=''" >> $GITHUB_ENV

@@ -1,15 +1,50 @@
 {
   "eslint.options": {
     "configFile": "./.eslintrc.cjs",
-    "extensions": [".cjs", ".md", ".mjs", ".ts"]
+    "extensions": [".cjs", ".cts", ".md", ".mjs", ".mts", ".ts"]
   },
   "files.associations": {
+    "*.d.cts": "typescript",
+    "*.d.mts": "typescript",
     ".env": "shellscript",
     ".env.*": "shellscript",
+    ".markdownlintignore": "ignore",
     "commit-msg": "shellscript",
     "pre-commit": "shellscript",
     "pre-push": "shellscript"
   },
   "prettier.configPath": "./.prettierrc.cjs",
-  "typescript.tsdk": "node_modules/typescript/lib"
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "vsicons.associations.files": [
+    {
+      "extensions": [".commitlintrc.ts"],
+      "format": "svg",
+      "icon": "commitlint"
+    },
+    {
+      "extensions": [".d.cts", ".d.mts"],
+      "format": "svg",
+      "icon": "typescriptdef"
+    },
+    {
+      "extensions": [".eslintrc.base.cjs"],
+      "format": "svg",
+      "icon": "eslint"
+    },
+    {
+      "extensions": ["prod.cjs.json", "prod.esm.json", "prod.types.json"],
+      "format": "svg",
+      "icon": "tsconfig"
+    },
+    {
+      "extensions": [".lintstagedrc.cjs"],
+      "format": "svg",
+      "icon": "lintstagedrc"
+    },
+    {
+      "extensions": ["yarnrc.yml"],
+      "format": "svg",
+      "icon": "yarn"
+    }
+  ]
 }

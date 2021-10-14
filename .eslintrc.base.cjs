@@ -22,7 +22,7 @@ module.exports = {
     ecmaFeatures: {
       impliedStrict: true
     },
-    extraFileExtensions: ['.cjs', '.mjs'],
+    extraFileExtensions: ['.cjs', '.cts', '.mjs', '.mts'],
     project: ['./tsconfig.json'],
     sourceType: 'module',
     tsconfigRootDir: __dirname,
@@ -121,6 +121,7 @@ module.exports = {
           'keyof',
           'loadenv',
           'mjs',
+          'ncc',
           'perf',
           'pkgfile',
           'pnv',
@@ -135,6 +136,7 @@ module.exports = {
           'typeof',
           'usr',
           'utf',
+          'vercel',
           'wasm',
           'wip',
           'yargs'
@@ -215,7 +217,13 @@ module.exports = {
   },
   overrides: [
     {
-      files: ['*.cjs', '**/*.md/*.js'],
+      files: ['**/*.cjs', '**/*.cts'],
+      rules: {
+        'unicorn/prefer-module': 0
+      }
+    },
+    {
+      files: ['**/*.cjs', '**/*.cts', '**/*.md/*.js'],
       parser: `${__dirname}/node_modules/@babel/eslint-parser/lib/index.cjs`,
       parserOptions: {
         requireConfigFile: false
@@ -226,9 +234,9 @@ module.exports = {
       }
     },
     {
-      files: ['*.cjs'],
+      files: ['**/*.d.cts', '**/*.d.mts'],
       rules: {
-        'unicorn/prefer-module': 0
+        'prettier/prettier': 0
       }
     },
     {
@@ -282,7 +290,7 @@ module.exports = {
       }
     },
     {
-      files: ['tools/loaders/env.cjs'],
+      files: ['tools/loaders/env.ts'],
       rules: {
         'unicorn/no-array-reduce': 0
       }
@@ -291,11 +299,18 @@ module.exports = {
   root: true,
   settings: {
     'import/parsers': {
-      [require.resolve('@typescript-eslint/parser')]: ['.d.ts', '.ts']
+      [require.resolve('@typescript-eslint/parser')]: [
+        '.cts',
+        '.d.cts',
+        '.d.mts',
+        '.d.ts',
+        '.mts',
+        '.ts'
+      ]
     },
     'import/resolver': {
       [require.resolve('eslint-import-resolver-node')]: {
-        extensions: ['.ts']
+        extensions: ['.cts', '.mts', '.ts']
       },
       [require.resolve('eslint-import-resolver-typescript')]: {
         alwaysTryTypes: true

@@ -1,7 +1,6 @@
 import type { Config } from '@jest/types'
-import { parse } from 'comment-json'
-import fs from 'fs-extra'
 import { pathsToModuleNameMapper } from 'ts-jest/utils'
+import { loadSync as tsconfigLoad } from 'tsconfig/dist/tsconfig'
 
 /**
  * @file Jest Configuration - Base
@@ -9,11 +8,12 @@ import { pathsToModuleNameMapper } from 'ts-jest/utils'
  * @see https://orlandobayo.com/blog/monorepo-testing-using-jest
  */
 
-const { compilerOptions } = parse(fs.readFileSync('./tsconfig.json').toString())
-
+const PWD = process.env.PROJECT_CWD as string
 const NODE_MODULES = process.env.NODE_MODULES as string
 const TYPE = 'e2e|functional|integration'
 const prefix = '<rootDir>'
+
+const { compilerOptions } = tsconfigLoad(PWD, 'tsconfig.json').config
 
 const config: Config.InitialOptions = {
   clearMocks: true,

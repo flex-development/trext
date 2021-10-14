@@ -1,7 +1,7 @@
-import logger from '@flex-development/grease/utils/logger.util'
 import LogLevel from '@flex-development/log/enums/log-level.enum'
 import type { ReplaceResult } from 'replace-in-file'
 import replace from 'replace-in-file'
+import logger from './logger'
 
 /**
  * @file Helpers - fixImportPaths
