@@ -13,10 +13,8 @@ on:
   push:
     branches:
       - next
-    paths:
-      - .github/workflows/**
-      - .yarnrc.yml
-      - yarn.lock
+      - push-action/**
+  workflow_dispatch:
 jobs:
   integrity-check:
     runs-on: ubuntu-latest

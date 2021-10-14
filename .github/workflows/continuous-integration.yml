@@ -9,8 +9,12 @@
 ---
 name: continuous-integration
 on:
-  - pull_request
-  - workflow_dispatch
+  pull_request:
+  push:
+    branches:
+      - next
+      - push-action/**
+  workflow_dispatch:
 jobs:
   continuous-integration:
     runs-on: ubuntu-latest
