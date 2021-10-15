@@ -1,11 +1,12 @@
 import { isNode } from '@babel/types'
-import type {
+import {
   FileExtension,
+  trext,
   TrextMatch,
   TrextNodePath,
   TrextOptions
 } from '@flex-development/trext'
-import { trext } from '@flex-development/trext'
+import Trextel from '@flex-development/trext/plugins/trextel.plugin'
 import { inspect } from 'util'
 
 /**
@@ -20,6 +21,7 @@ const TREXT_OPTIONS: TrextOptions<'js', 'cjs' | 'mjs'> = {
     // Check if match is NodePath, args === []
     if (isNode((match as any).node)) {
       const nodePath = match as TrextNodePath
+      const code: string | undefined = Trextel.getCode(nodePath)
 
       switch (nodePath.type) {
         case 'CallExpression':
@@ -41,7 +43,7 @@ const TREXT_OPTIONS: TrextOptions<'js', 'cjs' | 'mjs'> = {
       return '.mjs'
     }
 
-    // Check is match is RegExp object
+    // Check if match is RegExp object
     if (match.constructor.name === 'RegExp') {
       const regex = match as RegExp
 
