@@ -3,6 +3,8 @@ import { NodePath, Visitor } from '@babel/traverse'
 import {
   CallExpression,
   callExpression,
+  ExportAllDeclaration,
+  exportAllDeclaration,
   ImportDeclaration,
   importDeclaration,
   stringLiteral
@@ -71,11 +73,14 @@ class Trextel<F extends string = string, T extends string = string>
       type
     } = node as Record<string, any>
 
-    // Get user options
-    const { from, src, to } = { ...DEFAULTS, ...state.opts }
-
     // Get source code
     const code: string = (type === 'CallExpression' ? args[0] : source).value
+
+    // Do nothing is missing source code
+    if (!code) return
+
+    // Get user options
+    const { from, src, to } = { ...DEFAULTS, ...state.opts }
 
     // Ignore directory entry points
     if (isDirectory(`${src}${code.slice(code.indexOf('/'))}`)) return
@@ -96,10 +101,13 @@ class Trextel<F extends string = string, T extends string = string>
     // Create string literal
     const $code = stringLiteral(code.replace($from, $to))
 
-    // Transform  call expression or import statement
-    switch (type) {
+    // Transform call expression or import/export declarations
+    switch (type as TrextNodePath['type']) {
       case 'CallExpression':
         node = callExpression(callee, [$code])
+        break
+      case 'ExportAllDeclaration':
+        node = exportAllDeclaration($code)
         break
       case 'ImportDeclaration':
         node = importDeclaration(specifiers, $code)
@@ -108,6 +116,7 @@ class Trextel<F extends string = string, T extends string = string>
         break
     }
 
+    // Replace node
     nodePath.replaceWith(node)
   }
 
@@ -135,7 +144,21 @@ class Trextel<F extends string = string, T extends string = string>
   }
 
   /**
-   * Transforms import statements to use `options.to`.
+   * Transforms export all (`export *`) declarations to use `options.to`.
+   *
+   * @param {NodePath<ExportAllDeclaration>} nodePath - Current node path
+   * @param {TrextelState<F, T>} state - Plugin state
+   * @return {void} Nothing when complete
+   */
+  ExportAllDeclaration(
+    nodePath: NodePath<ExportAllDeclaration>,
+    state: TrextelState<F, T>
+  ): void {
+    Trextel.transform(nodePath, state)
+  }
+
+  /**
+   * Transforms import declarations to use `options.to`.
    *
    * @param {NodePath<ImportDeclaration>} nodePath - Current node path
    * @param {TrextelState<F, T>} state - Plugin state
@@ -165,6 +188,7 @@ class Trextel<F extends string = string, T extends string = string>
   get visitor(): Visitor<TrextelState<F, T>> {
     return {
       CallExpression: this.CallExpression,
+      ExportAllDeclaration: this.ExportAllDeclaration,
       ImportDeclaration: this.ImportDeclaration
     }
   }

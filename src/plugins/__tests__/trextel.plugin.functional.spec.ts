@@ -1,7 +1,13 @@
 import { Hub, NodePath } from '@babel/traverse'
-import type { CallExpression, ImportDeclaration, Node } from '@babel/types'
+import type {
+  CallExpression,
+  ExportAllDeclaration,
+  ImportDeclaration,
+  Node
+} from '@babel/types'
 import {
   callExpression,
+  exportAllDeclaration,
   identifier,
   importDeclaration,
   program,
@@ -79,6 +85,61 @@ describe('functional:plugins/Trextel', () => {
 
       // Expect
       expect(nodePath.node.arguments[0]).toMatchObject(expected)
+    })
+  })
+
+  describe('#ExportAllDeclaration', () => {
+    type Case = Testcase<Partial<Node>> & {
+      do: string
+      source: Parameters<typeof exportAllDeclaration>[0]
+      state: Pick<TrextelState, 'opts'>
+    }
+
+    const cases: Case[] = [
+      {
+        do: 'add extension to relative export all declaration',
+        expected: { value: './cat.cjs' },
+        source: stringLiteral('./cat'),
+        state: { opts: { from: 'js', to: 'cjs' } }
+      },
+      {
+        do: 'change extension in relative export all declaration',
+        expected: { value: '../dog.type.mjs' },
+        source: stringLiteral('../dog.type.js'),
+        state: { opts: { from: 'js', to: 'mjs' } }
+      },
+      {
+        do: 'not change extension in absolute import',
+        expected: { value: pkg.name },
+        source: stringLiteral(pkg.name),
+        state: { opts: { from: 'cjs', to: 'js' } }
+      },
+      {
+        do: 'ignore declaration if export is partial directory index',
+        expected: { value: './config' },
+        source: stringLiteral('./config'),
+        state: { opts: { from: 'js', to: 'mjs' } }
+      },
+      {
+        do: 'not ignore declaration if export is full directory index',
+        expected: { value: './interfaces/index.cjs' },
+        source: stringLiteral('./interfaces/index.js'),
+        state: { opts: { from: 'js', to: 'cjs' } }
+      }
+    ]
+
+    it.each<Case>(cases)('should $do', testcase => {
+      // Arrange
+      const { expected, source, state } = testcase
+      const nodePath = new NodePath<ExportAllDeclaration>(HUB, PROGRAM_NODE)
+      nodePath.node = exportAllDeclaration(source)
+      nodePath.container = PROGRAM_NODE
+
+      // Act
+      new TestSubject().ExportAllDeclaration(nodePath, state as TrextelState)
+
+      // Expect
+      expect(nodePath.node.source).toMatchObject(expected)
     })
   })
 

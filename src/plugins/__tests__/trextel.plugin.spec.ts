@@ -21,6 +21,7 @@ describe('unit:plugins/Trextel', () => {
     it('should return #CallExpression and #ImportDeclaration', () => {
       expect(Subject.visitor).toStrictEqual({
         CallExpression: Subject.CallExpression,
+        ExportAllDeclaration: Subject.ExportAllDeclaration,
         ImportDeclaration: Subject.ImportDeclaration
       })
     })
