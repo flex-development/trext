@@ -2,6 +2,43 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.1.0](https://github.com/flex-development/trext/compare/trext@1.0.2...trext@1.1.0) (2021-10-15)
+
+
+### :truck: Continuous Integration & Deployment
+
+* **workflows:** add `delete-release-branch` job ([804c006](https://github.com/flex-development/trext/commit/804c00622ba9734ed9177a9941bc4b25a908b8f3))
+* **workflows:** push to protected branch 'main' ([a03238c](https://github.com/flex-development/trext/commit/a03238c84113788b5fd84bd731f162492c09a587))
+
+
+### :robot: Testing
+
+* **plugins:** add fully specified directory index tests ([2115bd8](https://github.com/flex-development/trext/commit/2115bd8b901c898bb319f9ef69b73db3eaa6a551))
+
+
+### :hammer: Build
+
+* **cjs:** enable downleveling ([01a41ec](https://github.com/flex-development/trext/commit/01a41ecad5e879195b9cfb9eb53ca5ebc32ce8c9))
+* **typescript:** add sourcemaps for `.d.ts` files ([ed57233](https://github.com/flex-development/trext/commit/ed57233cd3f5d1a1e89c4cff1262c3a26a1e0db0))
+
+
+### :pencil2: Housekeeping
+
+* **tools:** drop `fixImportPaths` ([ff9ac19](https://github.com/flex-development/trext/commit/ff9ac19e9cfdbb7def399472ec64826e51451584))
+* **tools:** reimplement `loadenv` in cjs format ([4d1f246](https://github.com/flex-development/trext/commit/4d1f2468142480d99d5f8dd207b0a2403a68972e))
+* **tools:** remove `useModuleExports` from build workflow ([4c22aa9](https://github.com/flex-development/trext/commit/4c22aa921099abb99e6a947e4b67f4db2f47687e))
+* **typescript:** add note about disabling `noUnusedLocals` ([1a5c030](https://github.com/flex-development/trext/commit/1a5c030e1fcf8ca4cffa019294ae8aea552f0a04))
+* **typescript:** enable `exactOptionalPropertyTypes` ([708bc4d](https://github.com/flex-development/trext/commit/708bc4d00e05eb4e2050877ddd341e0b815758f3))
+* **typescript:** enable `noErrorTruncation` ([f92b160](https://github.com/flex-development/trext/commit/f92b160ed029efe49326c88cbcaabb0818cdf0b0))
+* **typescript:** enable `noPropertyAccessFromIndexSignature` ([832051d](https://github.com/flex-development/trext/commit/832051da0b8ec298d4c8a40e4aea72bee2d9fad9))
+* **typescript:** enable `noUncheckedIndexedAccess` ([aa95c2d](https://github.com/flex-development/trext/commit/aa95c2d4b2d732bf4dd2d7a4c77d2fc02b2752ba))
+* **typescript:** upgrade to typescript@4.5.0-beta ([7e9d04e](https://github.com/flex-development/trext/commit/7e9d04e5eef3fa3b224bcf69adb220ccbe09b089))
+
+
+### :sparkles: Features
+
+* transform export declarations ([#5](https://github.com/flex-development/trext/issues/5)) ([f937db0](https://github.com/flex-development/trext/commit/f937db042a4f6611636dad64d1b91e8439ea3161))
+
 ### [1.0.2](https://github.com/flex-development/trext/compare/trext@1.0.1...trext@1.0.2) (2021-10-13)
 
 

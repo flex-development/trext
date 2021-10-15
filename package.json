@@ -1,7 +1,7 @@
 {
   "name": "@flex-development/trext",
   "description": "File extension transformer",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "keywords": [
     "babel",
     "babel-transform",
