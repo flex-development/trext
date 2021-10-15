@@ -75,16 +75,26 @@ class Trextel<F extends string = string, T extends string = string>
     } = node as Record<string, any>
 
     // Get source code
-    const code: string = (type === 'CallExpression' ? args[0] : source).value
+    let code: string = (type === 'CallExpression' ? args[0] : source).value
 
     // Do nothing is missing source code
     if (!code) return
 
     // Get user options
-    const { from, src, to } = { ...DEFAULTS, ...state.opts }
+    const { from, mandatory, src, to } = { ...DEFAULTS, ...state.opts }
 
-    // Ignore directory entry points
-    if (isDirectory(`${src}${code.slice(code.indexOf('/'))}`)) return
+    // Ignore directory entry points if mandatory file extensions are disabled
+    if (isDirectory(`${src}/${code.match(/\w.+/)?.[0]}`)) {
+      const $m = mandatory as Exclude<TrextelState<F, T>, boolean>
+
+      if (mandatory === false) return
+      if ($m['call'] === false && type.startsWith('Call')) return
+      if ($m['exportAll'] === false && type.startsWith('ExportAll')) return
+      if ($m['exportNamed'] === false && type.startsWith('ExportNamed')) return
+      if ($m['import'] === false && type.startsWith('Import')) return
+
+      code = `${code}/index`
+    }
 
     // Ignore absolute imports
     if (!/^\./.test(code)) return

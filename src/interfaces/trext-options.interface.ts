@@ -26,6 +26,18 @@ interface TrextOptions<F extends string = string, T extends string = string> {
   from: F
 
   /**
+   * Add file extensions to all call expression arguments and module specifiers.
+   *
+   * @see https://nodejs.org/api/esm.html#esm_import_specifiers
+   * @see https://nodejs.org/api/esm.html#esm_mandatory_file_extensions
+   *
+   * @default true
+   */
+  mandatory?:
+    | boolean
+    | Partial<Record<'call' | 'exportAll' | 'exportNamed' | 'import', boolean>>
+
+  /**
    * File extension search pattern.
    *
    * @default /\..+$/

@@ -61,13 +61,19 @@ describe('functional:plugins/Trextel', () => {
       },
       {
         _arguments: [stringLiteral('../interfaces')],
-        do: 'ignore require statement if require is partial directory index',
+        do: 'not ignore require statement if require is partial dirix',
+        expected: { value: '../interfaces/index.mjs' },
+        state: { opts: { from: 'js', to: 'mjs' } }
+      },
+      {
+        _arguments: [stringLiteral('../interfaces')],
+        do: 'ignore require statement if require is partial dirix and file extensions are not mandatory',
         expected: { value: '../interfaces' },
-        state: { opts: { from: 'js', to: 'cjs' } }
+        state: { opts: { from: 'js', mandatory: { call: false }, to: 'mjs' } }
       },
       {
         _arguments: [stringLiteral('../utils/index.js')],
-        do: 'not ignore require statement if require is full directory index',
+        do: 'not ignore require statement if require is full dirix',
         expected: { value: '../utils/index.cjs' },
         state: { opts: { from: 'js', to: 'cjs' } }
       }
@@ -115,13 +121,21 @@ describe('functional:plugins/Trextel', () => {
         state: { opts: { from: 'cjs', to: 'js' } }
       },
       {
-        do: 'ignore declaration if export is partial directory index',
-        expected: { value: './config' },
-        source: stringLiteral('./config'),
-        state: { opts: { from: 'js', to: 'mjs' } }
+        do: 'not ignore export all declaration if export is partial dirix',
+        expected: { value: '../plugins/index.cjs' },
+        source: stringLiteral('../plugins'),
+        state: { opts: { from: 'js', to: 'cjs' } }
       },
       {
-        do: 'not ignore declaration if export is full directory index',
+        do: 'ignore export all declaration if export is partial dirix and file extensions are not mandatory',
+        expected: { value: './config' },
+        source: stringLiteral('./config'),
+        state: {
+          opts: { from: 'js', mandatory: { exportAll: false }, to: 'mjs' }
+        }
+      },
+      {
+        do: 'not ignore export all declaration if export is full dirix',
         expected: { value: './interfaces/index.cjs' },
         source: stringLiteral('./interfaces/index.js'),
         state: { opts: { from: 'js', to: 'cjs' } }
@@ -170,13 +184,19 @@ describe('functional:plugins/Trextel', () => {
         state: { opts: { from: 'js', to: 'cjs' } }
       },
       {
-        do: 'ignore import declaration if import is partial directory index',
-        expected: { value: '../types' },
-        source: stringLiteral('../types'),
+        do: 'not ignore import declaration if import is partial dirix',
+        expected: { value: '../../../types/index.mjs' },
+        source: stringLiteral('../../../types'),
         state: { opts: { from: 'js', to: 'mjs' } }
       },
       {
-        do: 'not ignore import declaration if import is full directory index',
+        do: 'ignore import declaration if import is partial dirix and file extensions are not mandatory',
+        expected: { value: '../types' },
+        source: stringLiteral('../types'),
+        state: { opts: { from: 'js', mandatory: { import: false }, to: 'mjs' } }
+      },
+      {
+        do: 'not ignore import declaration if import is full dirix',
         expected: { value: './plugins/index.mjs' },
         source: stringLiteral('./plugins/index.js'),
         state: { opts: { from: 'js', to: 'mjs' } }

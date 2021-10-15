@@ -12,6 +12,9 @@ type TrextDefaults = {
   /** {@link TrextOptions#babel} */
   babel: Partial<Record<keyof NonNullable<TrextOptions['babel']>, never>>
 
+  /** {@link TrextOptions#mandatory} */
+  mandatory: Extract<NonNullable<TrextOptions['mandatory']>, true>
+
   /** {@link TrextOptions#pattern} */
   pattern: Exclude<NonNullable<TrextOptions['pattern']>, string>
 
