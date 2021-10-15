@@ -1,10 +1,5 @@
 import type { NodePath } from '@babel/core'
-import type {
-  CallExpression,
-  ExportAllDeclaration,
-  ExportNamedDeclaration,
-  ImportDeclaration
-} from '@babel/types'
+import type TrextNode from './trext-node.type'
 
 /**
  * @file Type Definitions - TrextNodePath
@@ -14,18 +9,8 @@ import type {
 /**
  * {@link NodePath} objects used by `Trextel`, our [custom Babel plugin][1].
  *
- * - See {@link CallExpression}
- * - See {@link ExportAllDeclaration}
- * - See {@link ExportNamedDeclaration}
- * - See {@link ImportDeclaration}
- *
  * [1]: https://github.com/jamiebuilds/babel-handbook/blob/master/translations/en/plugin-handbook.md
  */
-type TrextNodePath = NodePath<
-  | CallExpression
-  | ExportAllDeclaration
-  | ExportNamedDeclaration
-  | ImportDeclaration
->
+type TrextNodePath = NodePath<TrextNode>
 
 export default TrextNodePath

@@ -11,6 +11,7 @@ import {
 } from '@babel/types'
 import DEFAULTS from '@trext/config/defaults.config'
 import { TrextelState } from '@trext/interfaces'
+import type { TrextNodeType } from '@trext/types'
 import { TrextNodePath } from '@trext/types'
 import { isDirectorySync as isDirectory } from 'path-type'
 
@@ -102,7 +103,7 @@ class Trextel<F extends string = string, T extends string = string>
     const $code = stringLiteral(code.replace($from, $to))
 
     // Transform call expression or import/export declarations
-    switch (type as TrextNodePath['type']) {
+    switch (type as TrextNodeType) {
       case 'CallExpression':
         node = callExpression(callee, [$code])
         break
