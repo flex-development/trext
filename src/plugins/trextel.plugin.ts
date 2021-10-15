@@ -5,6 +5,8 @@ import {
   callExpression,
   ExportAllDeclaration,
   exportAllDeclaration,
+  ExportNamedDeclaration,
+  exportNamedDeclaration,
   ImportDeclaration,
   importDeclaration,
   stringLiteral
@@ -68,6 +70,7 @@ class Trextel<F extends string = string, T extends string = string>
     let node = nodePath.node
     const {
       arguments: args,
+      declaration,
       callee,
       source,
       specifiers,
@@ -75,7 +78,7 @@ class Trextel<F extends string = string, T extends string = string>
     } = node as Record<string, any>
 
     // Get source code
-    let code: string = (type === 'CallExpression' ? args[0] : source).value
+    let code: string = (type === 'CallExpression' ? args[0] : source)?.value
 
     // Do nothing is missing source code
     if (!code) return
@@ -119,6 +122,9 @@ class Trextel<F extends string = string, T extends string = string>
         break
       case 'ExportAllDeclaration':
         node = exportAllDeclaration($code)
+        break
+      case 'ExportNamedDeclaration':
+        node = exportNamedDeclaration(declaration, specifiers, $code)
         break
       case 'ImportDeclaration':
         node = importDeclaration(specifiers, $code)
@@ -169,6 +175,20 @@ class Trextel<F extends string = string, T extends string = string>
   }
 
   /**
+   * Transforms named export (`export foo`) declarations to use `options.to`.
+   *
+   * @param {NodePath<ExportNamedDeclaration>} nodePath - Current node path
+   * @param {TrextelState<F, T>} state - Plugin state
+   * @return {void} Nothing when complete
+   */
+  ExportNamedDeclaration(
+    nodePath: NodePath<ExportNamedDeclaration>,
+    state: TrextelState<F, T>
+  ): void {
+    Trextel.transform(nodePath, state)
+  }
+
+  /**
    * Transforms import declarations to use `options.to`.
    *
    * @param {NodePath<ImportDeclaration>} nodePath - Current node path
@@ -200,6 +220,7 @@ class Trextel<F extends string = string, T extends string = string>
     return {
       CallExpression: this.CallExpression,
       ExportAllDeclaration: this.ExportAllDeclaration,
+      ExportNamedDeclaration: this.ExportNamedDeclaration,
       ImportDeclaration: this.ImportDeclaration
     }
   }

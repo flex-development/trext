@@ -2,12 +2,14 @@ import { Hub, NodePath } from '@babel/traverse'
 import type {
   CallExpression,
   ExportAllDeclaration,
+  ExportNamedDeclaration,
   ImportDeclaration,
   Node
 } from '@babel/types'
 import {
   callExpression,
   exportAllDeclaration,
+  exportNamedDeclaration,
   identifier,
   importDeclaration,
   program,
@@ -151,6 +153,69 @@ describe('functional:plugins/Trextel', () => {
 
       // Act
       new TestSubject().ExportAllDeclaration(nodePath, state as TrextelState)
+
+      // Expect
+      expect(nodePath.node.source).toMatchObject(expected)
+    })
+  })
+
+  describe('#ExportNamedDeclaration', () => {
+    type Case = Testcase<Partial<Node>> & {
+      do: string
+      source: Parameters<typeof exportNamedDeclaration>[2]
+      state: Pick<TrextelState, 'opts'>
+    }
+
+    const cases: Case[] = [
+      {
+        do: 'add extension to relative named export declaration',
+        expected: { value: './gecko.mjs' },
+        source: stringLiteral('./gecko'),
+        state: { opts: { from: 'js', to: 'mjs' } }
+      },
+      {
+        do: 'change extension in relative named export declaration',
+        expected: { value: './salamander.type.cjs' },
+        source: stringLiteral('./salamander.js'),
+        state: { opts: { from: 'js', to: 'type.cjs' } }
+      },
+      {
+        do: 'not change extension in absolute named export',
+        expected: { value: pkg.name },
+        source: stringLiteral(pkg.name),
+        state: { opts: { from: 'mjs', to: 'js' } }
+      },
+      {
+        do: 'not ignore named export declaration if export is partial dirix',
+        expected: { value: './plugins/index.cjs' },
+        source: stringLiteral('./plugins'),
+        state: { opts: { from: 'js', to: 'cjs' } }
+      },
+      {
+        do: 'ignore named export declaration if export is partial dirix and file extensions are not mandatory',
+        expected: { value: './config' },
+        source: stringLiteral('./config'),
+        state: {
+          opts: { from: 'js', mandatory: { exportNamed: false }, to: 'mjs' }
+        }
+      },
+      {
+        do: 'not ignore named export declaration if export is full dirix',
+        expected: { value: '../../../utils/index.mjs' },
+        source: stringLiteral('../../../utils/index.mjs'),
+        state: { opts: { from: 'js', to: 'mjs' } }
+      }
+    ]
+
+    it.each<Case>(cases)('should $do', testcase => {
+      // Arrange
+      const { expected, source, state } = testcase
+      const nodePath = new NodePath<ExportNamedDeclaration>(HUB, PROGRAM_NODE)
+      nodePath.node = exportNamedDeclaration(null, [], source)
+      nodePath.container = PROGRAM_NODE
+
+      // Act
+      new TestSubject().ExportNamedDeclaration(nodePath, state as TrextelState)
 
       // Expect
       expect(nodePath.node.source).toMatchObject(expected)
