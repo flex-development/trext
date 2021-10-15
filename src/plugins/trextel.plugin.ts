@@ -13,7 +13,6 @@ import {
 } from '@babel/types'
 import DEFAULTS from '@trext/config/defaults.config'
 import { TrextelState } from '@trext/interfaces'
-import type { TrextNodeType } from '@trext/types'
 import { TrextNodePath } from '@trext/types'
 import { isDirectorySync as isDirectory } from 'path-type'
 
@@ -53,6 +52,30 @@ class Trextel<F extends string = string, T extends string = string>
   }
 
   /**
+   * Retrieves the source code from `nodePath`.
+   *
+   * @param {TrextNodePath} nodePath - Current node path
+   * @return {string | undefined} Declaration, call expression, or `undefined`
+   */
+  static getCode(nodePath: TrextNodePath): string | undefined {
+    // Init source code value
+    let code: string | undefined
+
+    // Get source code value based on node type
+    switch (nodePath.node.type) {
+      case 'CallExpression':
+        // @ts-expect-error 'value' does not exist on type 'ArgumentPlaceholder'
+        code = nodePath.node.arguments[0]?.value
+        break
+      default:
+        code = nodePath.node.source?.value
+        break
+    }
+
+    return code
+  }
+
+  /**
    * Transforms call expressions and import statements to use `options.to`.
    *
    * @template F - Old file extension name(s)
@@ -68,17 +91,9 @@ class Trextel<F extends string = string, T extends string = string>
   ): TrextNodePath | void {
     // Get node
     let node = nodePath.node
-    const {
-      arguments: args,
-      declaration,
-      callee,
-      source,
-      specifiers,
-      type
-    } = node as Record<string, any>
 
     // Get source code
-    let code: string = (type === 'CallExpression' ? args[0] : source)?.value
+    let code: string | undefined = Trextel.getCode(nodePath)
 
     // Do nothing is missing source code
     if (!code) return
@@ -88,6 +103,7 @@ class Trextel<F extends string = string, T extends string = string>
 
     // Ignore directory entry points if mandatory file extensions are disabled
     if (isDirectory(`${src}/${code.match(/\w.+/)?.[0]}`)) {
+      const { type } = node
       const $m = mandatory as Exclude<TrextelState<F, T>, boolean>
 
       if (mandatory === false) return
@@ -116,18 +132,18 @@ class Trextel<F extends string = string, T extends string = string>
     const $code = stringLiteral(code.replace($from, $to))
 
     // Transform call expression or import/export declarations
-    switch (type as TrextNodeType) {
+    switch (node.type) {
       case 'CallExpression':
-        node = callExpression(callee, [$code])
+        node = callExpression(node.callee, [$code])
         break
       case 'ExportAllDeclaration':
         node = exportAllDeclaration($code)
         break
       case 'ExportNamedDeclaration':
-        node = exportNamedDeclaration(declaration, specifiers, $code)
+        node = exportNamedDeclaration(node.declaration, node.specifiers, $code)
         break
       case 'ImportDeclaration':
-        node = importDeclaration(specifiers, $code)
+        node = importDeclaration(node.specifiers, $code)
         break
       default:
         break

@@ -1,4 +1,4 @@
-import { Hub, NodePath } from '@babel/traverse'
+import { NodePath } from '@babel/traverse'
 import type {
   CallExpression,
   ExportAllDeclaration,
@@ -12,9 +12,10 @@ import {
   exportNamedDeclaration,
   identifier,
   importDeclaration,
-  program,
   stringLiteral
 } from '@babel/types'
+import HUB from '@tests/fixtures/hub.fixture'
+import PROGRAM_NODE from '@tests/fixtures/program.fixture'
 import type { Testcase } from '@tests/utils/types'
 import type { TrextelState } from '@trext/interfaces'
 import pkg from '../../../package.json'
@@ -26,9 +27,6 @@ import TestSubject from '../trextel.plugin'
  */
 
 describe('functional:plugins/Trextel', () => {
-  const HUB = new Hub()
-  const PROGRAM_NODE = program([])
-
   describe('#CallExpression', () => {
     type Case = Testcase<Partial<Node>> & {
       _arguments: Parameters<typeof callExpression>[1]
