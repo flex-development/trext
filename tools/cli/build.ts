@@ -23,7 +23,6 @@ import exec from '../helpers/exec'
 import logger from '../helpers/logger'
 import { $PACKAGE, $WNS, $WORKSPACE } from '../helpers/pkg'
 import tsconfigCascade from '../helpers/tsconfig-cascade'
-import useModuleExports from '../helpers/use-module-exports'
 
 /**
  * @file CLI - Package Build Workflow
@@ -188,7 +187,7 @@ try {
       alias: {
         configFile: `tsconfig.prod.${format}.json`,
         outDir: `./${format}`,
-        silent: true
+        silent: false
       },
       build: {
         ...((): TsConfig => {
@@ -217,7 +216,6 @@ try {
 
     // Build project
     !dryRun && tsc.build(options.build)
-    format === 'cjs' && useModuleExports(`${options.alias.outDir}/**`, dryRun)
 
     // Transform paths
     !dryRun && tsTransformPaths(options.alias)
