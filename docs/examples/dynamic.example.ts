@@ -1,9 +1,8 @@
-import type { NodePath } from '@babel/traverse'
-import type { CallExpression, ImportDeclaration } from '@babel/types'
 import { isNode } from '@babel/types'
 import type {
   FileExtension,
   TrextMatch,
+  TrextNodePath,
   TrextOptions
 } from '@flex-development/trext'
 import { trext } from '@flex-development/trext'
@@ -20,10 +19,23 @@ const TREXT_OPTIONS: TrextOptions<'js', 'cjs' | 'mjs'> = {
   to(match: TrextMatch, ...args: any[]): FileExtension<'cjs' | 'mjs'> {
     // Check if match is NodePath, args === []
     if (isNode((match as any).node)) {
-      const nodePath = match as NodePath<CallExpression | ImportDeclaration>
+      const nodePath = match as TrextNodePath
 
-      if (nodePath.type === 'CallExpression') {
-        //
+      switch (nodePath.type) {
+        case 'CallExpression':
+          //
+          break
+        case 'ExportAllDeclaration':
+          //
+          break
+        case 'ExportNamedDeclaration':
+          //
+          break
+        case 'ImportDeclaration':
+          //
+          break
+        default:
+          break
       }
 
       return '.mjs'

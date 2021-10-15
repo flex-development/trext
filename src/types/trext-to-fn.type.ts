@@ -19,6 +19,8 @@ import type TrextMatch from './trext-match.type'
  * will be a type of {@link NodePath} object:
  *
  * -  `NodePath<CallExpression>`
+ * -  `NodePath<ExportAllDeclaration>`
+ * -  `NodePath<ExportNamedDeclaration>`
  * -  `NodePath<ImportDeclaration>`
  *
  * @template T - File extension name(s)
