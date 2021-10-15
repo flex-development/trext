@@ -11,5 +11,5 @@
 # 2. Source environment variables
 # 3. Run Jest
 clear
-node ./tools/cli/loadenv.ts -c test
+node $PROJECT_CWD/tools/cli/loadenv.cjs -c test
 jest -i --passWithNoTests --testLocationInResults $@

@@ -55,7 +55,7 @@ jobs:
         run: yarn check:types
       - id: env
         name: Set build environment variables
-        run: node ./tools/cli/loadenv.ts -gc=test
+        run: node ./tools/cli/loadenv.cjs -gc=test
       - id: check-build
         name: Check build
         run: yarn build --tarball

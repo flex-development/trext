@@ -171,7 +171,7 @@ try {
   logger(argv, 'type check source code')
 
   // Set environment variables
-  exec(`node ${PWD}/tools/cli/loadenv.ts -c ${env}`, dryRun)
+  exec(`node ${PWD}/tools/cli/loadenv.cjs -c ${env}`, dryRun)
   logger(argv, `set ${env} environment variables`)
 
   // Build project, convert output extensions, create bundles

@@ -290,7 +290,7 @@ module.exports = {
       }
     },
     {
-      files: ['tools/loaders/env.ts'],
+      files: ['tools/cli/loadenv.cjs'],
       rules: {
         'unicorn/no-array-reduce': 0
       }
