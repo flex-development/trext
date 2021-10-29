@@ -7,7 +7,7 @@ import {
   TrextOptions
 } from '@flex-development/trext'
 import Trextel from '@flex-development/trext/plugins/trextel.plugin'
-import { inspect } from 'util'
+import { inspect } from 'node:util'
 
 /**
  * @file Examples - Dynamic File Extensions

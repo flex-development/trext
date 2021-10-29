@@ -3,13 +3,13 @@ import { trext } from '@flex-development/trext'
 import { inspect } from 'node:util'
 
 /**
- * @file Examples - Custom File Extension Search Pattern
- * @module docs/examples/pattern
+ * @file Examples - Absolute Imports
+ * @module docs/examples/absolute
  */
 
 const TREXT_OPTIONS: TrextOptions<'js', 'mjs'> = {
+  absolute: /@flex-development/,
   from: 'js',
-  pattern: /.js$/,
   to: 'mjs'
 }
 

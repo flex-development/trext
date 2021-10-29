@@ -1,6 +1,6 @@
 import type { TrextOptions } from '@flex-development/trext'
 import { trext } from '@flex-development/trext'
-import { inspect } from 'util'
+import { inspect } from 'node:util'
 
 /**
  * @file Examples - Disabling Mandatory File Extensions (By Node)

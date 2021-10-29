@@ -15,6 +15,7 @@ import DEFAULTS from '@trext/config/defaults.config'
 import { TrextelState } from '@trext/interfaces'
 import { TrextNodePath } from '@trext/types'
 import { isDirectorySync as isDirectory } from 'path-type'
+import resolve from 'resolve-cwd'
 
 /**
  * @file Plugins - Trextel
@@ -98,11 +99,29 @@ class Trextel<F extends string = string, T extends string = string>
     // Do nothing is missing source code
     if (!code) return
 
+    // Merge options
+    const options = { ...DEFAULTS, ...state.opts }
+
     // Get user options
-    const { from, mandatory, src, to } = { ...DEFAULTS, ...state.opts }
+    const { absolute, from, mandatory, src, to } = options
+
+    // Check for absolute import
+    const absimport = !/^\./.test(code)
+
+    // Ignore absolute imports
+    if (absimport) {
+      if (absolute === false) return
+      if (typeof absolute !== 'boolean' && !absolute.test(code)) return
+    }
+
+    // Check for directory entry point
+    const directory: boolean = ((): boolean => {
+      if (absimport) return !!resolve.silent(`${code}/index`)
+      return isDirectory(`${src}/${code.match(/\w.+/)?.[0]}`)
+    })()
 
     // Ignore directory entry points if mandatory file extensions are disabled
-    if (isDirectory(`${src}/${code.match(/\w.+/)?.[0]}`)) {
+    if (directory) {
       const { type } = node
       const $m = mandatory as Exclude<TrextelState<F, T>, boolean>
 
@@ -113,10 +132,7 @@ class Trextel<F extends string = string, T extends string = string>
       if ($m['import'] === false && type.startsWith('Import')) return
 
       code = `${code}/index`
-    }
-
-    // Ignore absolute imports
-    if (!/^\./.test(code)) return
+    } else if (absimport && resolve.silent(`${code}/package.json`)) return
 
     // Get output extension
     let $to = typeof to === 'function' ? to(nodePath) : to

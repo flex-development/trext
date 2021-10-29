@@ -50,7 +50,7 @@ imports to use `.mjs` extensions.
 ```typescript
 import type { TrextOptions } from '@flex-development/trext'
 import { trext } from '@flex-development/trext'
-import { inspect } from 'util'
+import { inspect } from 'node:util'
 
 /**
  * @file Examples - Basic Usage
@@ -69,6 +69,37 @@ trext('esm/', TREXT_OPTIONS)
 
 ### Advanced Usage
 
+#### Absolute Imports
+
+By default, all absolute imports are ignored.
+
+To transform extensions in absolute imports, set `absolute` to `true` or a
+`RegExp` object filter:
+
+```typescript
+import type { TrextOptions } from '@flex-development/trext'
+import { trext } from '@flex-development/trext'
+import { inspect } from 'node:util'
+
+/**
+ * @file Examples - Absolute Imports
+ * @module docs/examples/absolute
+ */
+
+const TREXT_OPTIONS: TrextOptions<'js', 'mjs'> = {
+  absolute: /@flex-development/,
+  from: 'js',
+  to: 'mjs'
+}
+
+trext('esm/', TREXT_OPTIONS)
+  .then(results => console.info(inspect(results, false, null)))
+  .catch(error => console.error(inspect(error, false, null)))
+```
+
+A regex filter is recommended unless all of your call expressions, exports,
+and/or imports use the same file extension.
+
 #### Babel Transform
 
 `trext` implements a [custom Babel plugin][7] to update `export`, `import`, and
@@ -78,7 +109,7 @@ specify additional transform options using the `babel` property:
 ```typescript
 import type { TrextOptions } from '@flex-development/trext'
 import { trext } from '@flex-development/trext'
-import { inspect } from 'util'
+import { inspect } from 'node:util'
 
 /**
  * @file Examples - Babel Transform Options
@@ -114,7 +145,7 @@ import {
   TrextOptions
 } from '@flex-development/trext'
 import Trextel from '@flex-development/trext/plugins/esm/trextel.plugin'
-import { inspect } from 'util'
+import { inspect } from 'node:util'
 
 /**
  * @file Examples - Dynamic File Extensions
@@ -177,7 +208,7 @@ specify a custom file extension search `pattern`:
 ```typescript
 import type { TrextOptions } from '@flex-development/trext'
 import { trext } from '@flex-development/trext'
-import { inspect } from 'util'
+import { inspect } from 'node:util'
 
 /**
  * @file Examples - Custom File Extension Search Pattern
@@ -222,7 +253,7 @@ directory index lookup location:
 ```typescript
 import type { TrextOptions } from '@flex-development/trext'
 import { trext } from '@flex-development/trext'
-import { inspect } from 'util'
+import { inspect } from 'node:util'
 
 /**
  * @file Examples - Ignoring Directory Indexes
@@ -250,7 +281,7 @@ specified][11]. Set `mandatory` to `false` to disable transformations for all
 ```typescript
 import type { TrextOptions } from '@flex-development/trext'
 import { trext } from '@flex-development/trext'
-import { inspect } from 'util'
+import { inspect } from 'node:util'
 
 /**
  * @file Examples - Disabling Mandatory File Extensions
@@ -274,7 +305,7 @@ You can also disable transformations by [`TrextNode`][12] type:
 ```typescript
 import type { TrextOptions } from '@flex-development/trext'
 import { trext } from '@flex-development/trext'
-import { inspect } from 'util'
+import { inspect } from 'node:util'
 
 /**
  * @file Examples - Disabling Mandatory File Extensions (By Node)

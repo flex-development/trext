@@ -9,6 +9,9 @@ import type { TrextOptions } from '@trext/interfaces'
  * Default `trext` options.
  */
 type TrextDefaults = {
+  /** {@link TrextOptions#absolute} */
+  absolute: Extract<NonNullable<TrextOptions['absolute']>, false>
+
   /** {@link TrextOptions#babel} */
   babel: Partial<Record<keyof NonNullable<TrextOptions['babel']>, never>>
 

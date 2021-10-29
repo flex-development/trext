@@ -21,8 +21,10 @@ module.exports = {
           'dirix',
           'errno',
           'filenames',
+          'promisify',
           'trext',
-          'trextel'
+          'trextel',
+          'tutils'
         ]
       }
     ]

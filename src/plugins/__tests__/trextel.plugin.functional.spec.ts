@@ -54,6 +54,12 @@ describe('functional:plugins/Trextel', () => {
         state: { opts: { from: 'js', to: 'mjs' } }
       },
       {
+        _arguments: [stringLiteral('@flex-development/tutils/cjs/guards')],
+        do: 'change extension in absolute require statement if enabled',
+        expected: { value: '@flex-development/tutils/cjs/guards/index.cjs' },
+        state: { opts: { absolute: true, from: 'js', to: 'cjs' } }
+      },
+      {
         _arguments: [callExpression(identifier('getPackageName'), [])],
         do: 'not change extension if require is not string literal',
         expected: { arguments: [] },
@@ -115,10 +121,16 @@ describe('functional:plugins/Trextel', () => {
         state: { opts: { from: 'js', to: 'mjs' } }
       },
       {
-        do: 'not change extension in absolute import',
+        do: 'not change extension in absolute export',
         expected: { value: pkg.name },
         source: stringLiteral(pkg.name),
         state: { opts: { from: 'cjs', to: 'js' } }
+      },
+      {
+        do: 'change extension in absolute export if enabled',
+        expected: { value: '@flex-development/log/esm/utils/format.util.mjs' },
+        source: stringLiteral('@flex-development/log/esm/utils/format.util'),
+        state: { opts: { absolute: true, from: 'js', to: 'mjs' } }
       },
       {
         do: 'not ignore export all declaration if export is partial dirix',
@@ -184,6 +196,12 @@ describe('functional:plugins/Trextel', () => {
         state: { opts: { from: 'mjs', to: 'js' } }
       },
       {
+        do: 'change extension in absolute named export if enabled',
+        expected: { value: '@flex-development/grease/cjs/main.cjs' },
+        source: stringLiteral('@flex-development/grease/cjs/main'),
+        state: { opts: { absolute: true, from: 'js', to: 'cjs' } }
+      },
+      {
         do: 'not ignore named export declaration if export is partial dirix',
         expected: { value: './plugins/index.cjs' },
         source: stringLiteral('./plugins'),
@@ -244,7 +262,13 @@ describe('functional:plugins/Trextel', () => {
         do: 'not change extension in absolute import',
         expected: { value: pkg.name },
         source: stringLiteral(pkg.name),
-        state: { opts: { from: 'js', to: 'cjs' } }
+        state: { opts: { absolute: /@gar/, from: 'js', to: 'cjs' } }
+      },
+      {
+        do: 'change extension in absolute import if enabled',
+        expected: { value: '@gar/promisify/index.js' },
+        source: stringLiteral('@gar/promisify'),
+        state: { opts: { absolute: true, from: 'cjs', to: 'js' } }
       },
       {
         do: 'not ignore import declaration if import is partial dirix',

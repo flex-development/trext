@@ -15,6 +15,17 @@ import type { TrextTo } from '@trext/types'
  */
 interface TrextOptions<F extends string = string, T extends string = string> {
   /**
+   * Transform extensions in absolute imports. To transform a select amount of
+   * extensions, pass a regex filter. Otherwise, pass `true`.
+   *
+   * A regex filter is recommended unless all of your call expressions, exports,
+   * and/or imports use the same file extension.
+   *
+   * @default false
+   */
+  absolute?: RegExp | boolean
+
+  /**
    * Babel transformation options.
    *
    * @default {}

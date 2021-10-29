@@ -1,6 +1,6 @@
 import DEFAULTS from '@trext/config/defaults.config'
 import type { TrextFileResult } from '@trext/types'
-import fs from 'fs'
+import fs from 'node:fs'
 import FILENAMES from './filenames.fixture'
 
 /**
