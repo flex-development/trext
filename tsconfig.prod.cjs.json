@@ -5,6 +5,12 @@
     "module": "commonjs",
     "outDir": "./cjs",
     "paths": {
+      "@flex-development/tutils": [
+        "node_modules/@flex-development/tutils/cjs/index"
+      ],
+      "@flex-development/tutils/*": [
+        "node_modules/@flex-development/tutils/cjs/*"
+      ],
       "@trext": ["src/index.ts"],
       "@trext/*": ["src/*"]
     },

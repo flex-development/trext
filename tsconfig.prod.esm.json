@@ -2,6 +2,12 @@
   "compilerOptions": {
     "outDir": "./esm",
     "paths": {
+      "@flex-development/tutils": [
+        "node_modules/@flex-development/tutils/esm/index"
+      ],
+      "@flex-development/tutils/*": [
+        "node_modules/@flex-development/tutils/esm/*"
+      ],
       "@trext": ["src/index.ts"],
       "@trext/*": ["src/*"]
     }

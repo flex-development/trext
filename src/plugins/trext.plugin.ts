@@ -1,4 +1,5 @@
 import { transformFileAsync, TransformOptions } from '@babel/core'
+import { RegexString } from '@flex-development/tutils'
 import DEFAULTS from '@trext/config/defaults.config'
 import { TrextOptions } from '@trext/interfaces'
 import Trextel from '@trext/plugins/trextel.plugin'
@@ -7,7 +8,6 @@ import type {
   TrextTo as To,
   TrextToFn as ToFn
 } from '@trext/types'
-import { RegexString } from '@trext/types'
 import addSourceMap from '@trext/utils/add-source-map.util'
 import glob from '@trext/utils/glob.util'
 import saveFile from '@trext/utils/save-file.util'

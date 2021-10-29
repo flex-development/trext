@@ -29,6 +29,12 @@
       ],
       "@flex-development/log": ["node_modules/@flex-development/log/esm/index"],
       "@flex-development/log/*": ["node_modules/@flex-development/log/esm/*"],
+      "@flex-development/tutils": [
+        "node_modules/@flex-development/tutils/esm/index"
+      ],
+      "@flex-development/tutils/*": [
+        "node_modules/@flex-development/tutils/esm/*"
+      ],
       "@flex-development/trext": ["src/index"],
       "@flex-development/trext/*": ["src/*"],
       "@tests/fixtures/*": ["__tests__/__fixtures__/*"],

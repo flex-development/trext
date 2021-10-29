@@ -1,5 +1,6 @@
 import type { TransformOptions } from '@babel/core'
-import type { RegexString, TrextTo } from '@trext/types'
+import type { RegexString } from '@flex-development/tutils'
+import type { TrextTo } from '@trext/types'
 
 /**
  * @file Interfaces - TrextOptions

@@ -783,6 +783,7 @@ __metadata:
     "@commitlint/types": 13.2.0
     "@flex-development/grease": 2.0.0
     "@flex-development/log": 3.0.0-dev.0
+    "@flex-development/tutils": 4.2.1
     "@jest/globals": 27.2.4
     "@jest/types": 27.2.4
     "@tests/fixtures": "link:__tests__/__fixtures__"
@@ -879,6 +880,16 @@ __metadata:
   peerDependencies:
     typescript: ">=2.7"
   checksum: d4ebf259d3072d946d407b254a9ce6a8a53ad2adc8e1e4e7a73aa00970d6ef6cc27a1df0c5c0dff20ea71c6789428ceaec497912e3f0825f902138a1ecfb4479
+  languageName: node
+  linkType: hard
+
+"@flex-development/tutils@npm:4.2.1":
+  version: 4.2.1
+  resolution: "@flex-development/tutils@npm:4.2.1::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40flex-development%2Ftutils%2F4.2.1%2F39ebb841707c4de205805a238e642c12d311e9421d7a8e7c3379a90e7fa4e6a7"
+  peerDependencies:
+    "@types/node": ">=14.0.0"
+    typescript: 4.5.0-beta
+  checksum: ff77c67b8840d8bd704d67788af65cb6bb8802ecb42640c258bb687cc862a9191cc89ee4a3c9614e07547188c728e5bb84dc9a811270afad78c2fbb1cbff54f7
   languageName: node
   linkType: hard
 

@@ -4,7 +4,6 @@
  */
 
 export type { default as FileExtension } from './file-extension.type'
-export type { default as RegexString } from './regex-string.type'
 export type { default as SourceMapComment } from './source-map-comment.type'
 export type { default as TrextDefaults } from './trext-defaults.type'
 export type { default as TrextFileResult } from './trext-file-result.type'

@@ -1,4 +1,4 @@
-import type RegexString from './regex-string.type'
+import type { RegexString } from '@flex-development/tutils'
 import type TrextNodePath from './trext-node-path.type'
 
 /**
