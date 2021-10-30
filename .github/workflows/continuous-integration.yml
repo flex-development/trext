@@ -50,9 +50,6 @@ jobs:
       - id: check-style
         name: Check code style
         run: yarn check:style --max-warnings 0
-      - id: check-types
-        name: Check types
-        run: yarn check:types
       - id: env
         name: Set build environment variables
         run: node ./tools/cli/loadenv.cjs -gc=test
