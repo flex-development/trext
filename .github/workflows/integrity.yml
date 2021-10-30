@@ -59,6 +59,6 @@ jobs:
       - id: dedupe-check
         name: Check for duplicate dependencies in lock file
         run: yarn check:dedupe
-      - id: dependency-graph
-        name: Check dependency graph
-        run: yarn check:install
+      # - id: dependency-graph
+      #   name: Check dependency graph
+      #   run: yarn check:install
