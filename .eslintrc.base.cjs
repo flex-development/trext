@@ -129,6 +129,7 @@ module.exports = {
           'prepack',
           'readonly',
           'rimraf',
+          'stringified',
           'tgz',
           'tsc',
           'tsconfig',
