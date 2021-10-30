@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.0.1](https://github.com/flex-development/trext/compare/trext@2.0.0...trext@2.0.1) (2021-10-30)
+
+
+### :bug: Fixes
+
+* **cjs:** missing named exports ([e3466b7](https://github.com/flex-development/trext/commit/e3466b713e342ac7b491f2753310a5ecdd171168))
+
 ## [2.0.0](https://github.com/flex-development/trext/compare/trext@1.1.0...trext@2.0.0) (2021-10-30)
 
 
