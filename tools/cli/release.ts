@@ -5,8 +5,8 @@ import type { IGreaseOptions } from '@flex-development/grease/interfaces'
 import LogLevel from '@flex-development/log/enums/log-level.enum'
 import ch from 'chalk'
 import merge from 'lodash.merge'
+import { inspect } from 'node:util'
 import sh from 'shelljs'
-import { inspect } from 'util'
 import type { Argv } from 'yargs'
 import yargs from 'yargs'
 import { hideBin } from 'yargs/helpers'
@@ -75,7 +75,7 @@ export type ReleaseOptions = {
 export type ReleaseArgs = Argv<ReleaseOptions>
 export type ReleaseArgv = Exclude<ReleaseArgs['argv'], Promise<any>>
 
-const args = yargs(hideBin(process.argv), process.env.INIT_CWD)
+const args = yargs(hideBin(process.argv), process.env['INIT_CWD'])
   .usage('$0 [options]')
   .option('commitAll', {
     alias: 'a',
@@ -130,15 +130,15 @@ const argv: ReleaseArgv = await args.argv
 const options: IGreaseOptions = {
   commitAll: true,
   gitTagFallback: false,
-  gitdir: process.env.PROJECT_CWD,
+  gitdir: process.env['PROJECT_CWD'],
   lernaPackage: $WNS,
   releaseAssets: ['./*.tgz'],
   releaseBranchWhitelist: ['release/*'],
   releaseCommitMessageFormat: `release: ${$WORKSPACE}@{{currentTag}}`,
   scripts: {
-    postchangelog: `yarn pack -o %s-%v.tgz ${(argv.d && '-n') || ''}`.trim(),
+    postchangelog: `yarn pack -o %s-%v.tgz ${(argv['d'] && '-n') || ''}`.trim(),
     postcommit: 'git pnv',
-    postgreaser: 'yarn clean:build && rimraf ./*.tgz',
+    postgreaser: 'yarn clean:build',
     prerelease: 'yarn test --no-cache'
   },
   // `continuous-deployment` workflow will create new tag
@@ -173,7 +173,8 @@ logger(
 )
 
 // Run release workflow
-grease(merge({}, options, argv)).catch(error => {
+// @ts-expect-error Property 'default' does not exist on type
+grease.default(merge({}, options, argv)).catch((error: any) => {
   if (error.stderr) return
   else sh.echo(ch.bold.red(inspect(error, false, null)))
 })
