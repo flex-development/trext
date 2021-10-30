@@ -115,6 +115,7 @@ module.exports = {
           'basedir',
           'cjs',
           'commonjs',
+          'ctx',
           'dotenv',
           'esm',
           'extensionless',
