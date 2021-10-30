@@ -2,6 +2,37 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.0.0](https://github.com/flex-development/trext/compare/trext@1.1.0...trext@2.0.0) (2021-10-30)
+
+
+### ⚠ BREAKING CHANGES
+
+* import `RegexString` from `@flex-development/tutils`
+
+### :recycle: Code Improvements
+
+* import `RegexString` from `@flex-development/tutils` ([763a305](https://github.com/flex-development/trext/commit/763a30542fbcb6c634baa50add0029ab99a49b09))
+
+
+### :sparkles: Features
+
+* `TrextOptions#absolute` ([7ee867a](https://github.com/flex-development/trext/commit/7ee867ac7890d40e325a5e701186dd730063e0e7))
+
+
+### :truck: Continuous Integration & Deployment
+
+* **workflows:** temporarily skip dependency graph check ([bbeae54](https://github.com/flex-development/trext/commit/bbeae54f1f0a0b305aeb3893d5df955bbecf93d7))
+
+
+### :pencil2: Housekeeping
+
+* **scripts:** add `check:ci` script ([93af4df](https://github.com/flex-development/trext/commit/93af4dfc36e0a2d85689577cebaf66ac79eb6793))
+* **tools:** cleanup esm loader ([d4f10f6](https://github.com/flex-development/trext/commit/d4f10f699b3751e53cbaf26816eca9945a0220cd))
+* **tools:** reorganize build workflow ([5774ac3](https://github.com/flex-development/trext/commit/5774ac33cfc0c7759328d4a28c73d4d0b28b8728))
+* **tools:** use explicit environment variables in testing workflow ([f436d3d](https://github.com/flex-development/trext/commit/f436d3d4edb4dba085fe29d2185e9c9351c15766))
+* **typescript:** add typings for `@vercel/ncc` ([82acbbc](https://github.com/flex-development/trext/commit/82acbbca51ac6e8da1704e57a5fb55abfb2ed3fa))
+* **typescript:** add typings for `tsc-prog/dist/utils/log` ([ffa44cf](https://github.com/flex-development/trext/commit/ffa44cf4da7ad5e166fb7192862f49ef7e187147))
+
 ## [1.1.0](https://github.com/flex-development/trext/compare/trext@1.0.2...trext@1.1.0) (2021-10-15)
 
 
