@@ -132,6 +132,7 @@ module.exports = {
           'readonly',
           'rimraf',
           'stringified',
+          'symlinked',
           'tgz',
           'tsc',
           'tsconfig',

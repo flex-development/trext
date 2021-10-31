@@ -8,6 +8,7 @@ import type { TrextDefaults } from '@trext/types'
 const DEFAULTS: TrextDefaults = {
   absolute: false,
   babel: {},
+  direxts: ['.cjs', '.cts', '.js', '.jsx', '.mjs', '.mts', '.ts', '.tsx'],
   mandatory: true,
   pattern: /\..+$/,
   src: `${process.cwd()}/src`

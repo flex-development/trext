@@ -103,7 +103,7 @@ class Trextel<F extends string = string, T extends string = string>
     const options = { ...DEFAULTS, ...state.opts }
 
     // Get user options
-    const { absolute, from, mandatory, src, to } = options
+    const { absolute, direxts, from, mandatory, src, to } = options
 
     // Check for absolute import
     const absimport = !/^\./.test(code)
@@ -115,13 +115,22 @@ class Trextel<F extends string = string, T extends string = string>
     }
 
     // Check for directory entry point
-    const directory: boolean = ((): boolean => {
-      if (absimport) return !!resolve.silent(`${code}/index`)
+    const dirix: boolean = ((): boolean => {
+      if (absimport) {
+        // ! Get possible fully specified index files (to account for symlinks)
+        const indices = direxts.map(ext => `${code}/index${ext}`)
+
+        // ! Add partially specified index (to maintain backwards compatibility)
+        indices.unshift(`${code}/index`)
+
+        return indices.map(index => !!resolve.silent(index)).includes(true)
+      }
+
       return isDirectory(`${src}/${code.match(/\w.+/)?.[0]}`)
     })()
 
     // Ignore directory entry points if mandatory file extensions are disabled
-    if (directory) {
+    if (dirix) {
       const { type } = node
       const $m = mandatory as Exclude<TrextelState<F, T>, boolean>
 

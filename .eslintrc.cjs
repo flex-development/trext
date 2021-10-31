@@ -18,12 +18,18 @@ module.exports = {
         skipWords: [
           ...RULES_SPELLCHECKER[1].skipWords,
           'callee',
+          'cts',
+          'direxts',
           'dirix',
           'errno',
           'filenames',
+          'jsx',
+          'mts',
           'promisify',
+          'symlinks',
           'trext',
           'trextel',
+          'tsx',
           'tutils'
         ]
       }

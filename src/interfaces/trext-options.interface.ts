@@ -1,6 +1,6 @@
 import type { TransformOptions } from '@babel/core'
 import type { RegexString } from '@flex-development/tutils'
-import type { TrextTo } from '@trext/types'
+import type { FileExtension, TrextTo } from '@trext/types'
 
 /**
  * @file Interfaces - TrextOptions
@@ -33,6 +33,14 @@ interface TrextOptions<F extends string = string, T extends string = string> {
   babel?: TransformOptions
 
   /**
+   * Array containing `index` file extensions (with the leading `.`) to test for
+   * when searching for directory entry points (including symlinked entries).
+   *
+   * @default ['.cjs','.cts','.js','.jsx','.mjs','.mts','.ts','.tsx']
+   */
+  direxts?: FileExtension[]
+
+  /**
    * File extension to transform.
    */
   from: F
@@ -61,7 +69,7 @@ interface TrextOptions<F extends string = string, T extends string = string> {
    *
    * Used to identify and ignore `import` and `require` statements that include
    * directory entry points without a specifier or a `/index` suffix (i.e: `from
-   * './types'`, where `./types/index.*` is the file being imported).
+   * '/types'`, where `./types/index.*` is the file being imported).
    *
    * @default `${process.cwd()}/src`
    */

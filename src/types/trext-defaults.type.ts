@@ -15,6 +15,9 @@ type TrextDefaults = {
   /** {@link TrextOptions#babel} */
   babel: Partial<Record<keyof NonNullable<TrextOptions['babel']>, never>>
 
+  /** {@link TrextOptions#direxts} */
+  direxts: ['.cjs', '.cts', '.js', '.jsx', '.mjs', '.mts', '.ts', '.tsx']
+
   /** {@link TrextOptions#mandatory} */
   mandatory: Extract<NonNullable<TrextOptions['mandatory']>, true>
 
