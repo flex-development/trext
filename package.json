@@ -47,38 +47,31 @@
       "import": "./esm/trext.mjs",
       "require": "./cjs/trext.cjs"
     },
-    "./*": {
-      "import": "./esm/*.mjs",
-      "require": "./cjs/*.cjs"
-    },
-    "./cjs": "./cjs/index.cjs",
-    "./cjs/*": "./cjs/*.cjs",
+    "./": "./",
     "./config": {
       "import": "./esm/config/index.mjs",
       "require": "./cjs/config/index.cjs"
     },
-    "./config/*": {
-      "import": "./esm/config/*.mjs",
-      "require": "./cjs/config/*.cjs"
+    "./config/": {
+      "import": "./esm/config/",
+      "require": "./cjs/config/"
     },
-    "./esm": "./esm/index.mjs",
-    "./esm/*": "./esm/*.mjs",
     "./interfaces": {
       "import": "./esm/interfaces/index.mjs",
       "require": "./cjs/interfaces/index.cjs"
     },
-    "./interfaces/*": {
-      "import": "./esm/interfaces/*.mjs",
-      "require": "./cjs/interfaces/*.cjs"
+    "./interfaces/": {
+      "import": "./esm/interfaces/",
+      "require": "./cjs/interfaces/"
     },
     "./package.json": "./package.json",
     "./plugins": {
       "import": "./esm/plugins/index.mjs",
       "require": "./cjs/plugins/index.cjs"
     },
-    "./plugins/*": {
-      "import": "./esm/plugins/*.mjs",
-      "require": "./cjs/plugins/*.cjs"
+    "./plugins/": {
+      "import": "./esm/plugins/",
+      "require": "./cjs/plugins/"
     },
     "./trext": {
       "import": "./esm/trext.mjs",
@@ -88,22 +81,22 @@
       "import": "./esm/types/index.mjs",
       "require": "./cjs/types/index.cjs"
     },
-    "./types/*": {
-      "import": "./esm/types/*.mjs",
-      "require": "./cjs/types/*.cjs"
+    "./types/": {
+      "import": "./esm/types/",
+      "require": "./cjs/types/"
     },
     "./utils": {
       "import": "./esm/utils/index.mjs",
       "require": "./cjs/utils/index.cjs"
     },
-    "./utils/*": {
-      "import": "./esm/utils/*.mjs",
-      "require": "./cjs/utils/*.cjs"
+    "./utils/": {
+      "import": "./esm/utils/",
+      "require": "./cjs/utils/"
     }
   },
   "main": "./cjs/trext.min.cjs",
   "module": "./esm/trext.min.mjs",
-  "typings": "./types/index.d.ts",
+  "types": "./types/index.d.ts",
   "scripts": {
     "clean:build": "rimraf ./(cjs|esm|types|*.tgz) || true",
     "clean:modules": "rimraf ./node_modules",
