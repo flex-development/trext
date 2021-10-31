@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.0.2](https://github.com/flex-development/trext/compare/trext@2.0.1...trext@2.0.2) (2021-10-31)
+
+
+### :bug: Fixes
+
+* **plugins:** symlinked directory index handling ([804b6f9](https://github.com/flex-development/trext/commit/804b6f99aea7acba57917ad5522237701a6c6863))
+
 ### [2.0.1](https://github.com/flex-development/trext/compare/trext@2.0.0...trext@2.0.1) (2021-10-30)
 
 
