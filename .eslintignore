@@ -12,3 +12,4 @@
 __tests__/__fixtures__/trext.plugin.js
 
 !/src/types/*
+!**/.*.*
