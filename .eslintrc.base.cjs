@@ -118,6 +118,7 @@ module.exports = {
           'commonjs',
           'cts',
           'ctx',
+          'dedupe',
           'dotenv',
           'enum',
           'esm',
