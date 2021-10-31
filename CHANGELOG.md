@@ -2,8 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-### [2.0.2](https://github.com/flex-development/trext/compare/trext@2.0.1...trext@2.0.2) (2021-10-31)
+### [2.0.3](https://github.com/flex-development/trext/compare/trext@2.0.2...trext@2.0.3) (2021-10-31)
 
+### :bug: Fixes
+
+* package exports ([207513b](https://github.com/flex-development/trext/commit/207513b0f2f8af721f6c2c59c64df7c4ac616a7e))
+
+### :hammer: Build
+
+* **deps:** use `@flex-development/tutils@4.2.2` ([48a81cc](https://github.com/flex-development/trext/commit/48a81cc682eb83baa69418cba3266077329efce9))
+
+### :pencil2: Housekeeping
+
+* check for duplicate deps when `yarn.lock` changes ([e5a0b0d](https://github.com/flex-development/trext/commit/e5a0b0ddb2ef21101acc16fd74165ebf3a0321bd))
+* update eslint config to handle dotfiles ([c20259e](https://github.com/flex-development/trext/commit/c20259e187d0dcb977ea6511e341bb17281916bc))
+
+### [2.0.2](https://github.com/flex-development/trext/compare/trext@2.0.1...trext@2.0.2) (2021-10-31)
 
 ### :bug: Fixes
 
@@ -11,13 +25,11 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### [2.0.1](https://github.com/flex-development/trext/compare/trext@2.0.0...trext@2.0.1) (2021-10-30)
 
-
 ### :bug: Fixes
 
 * **cjs:** missing named exports ([e3466b7](https://github.com/flex-development/trext/commit/e3466b713e342ac7b491f2753310a5ecdd171168))
 
 ## [2.0.0](https://github.com/flex-development/trext/compare/trext@1.1.0...trext@2.0.0) (2021-10-30)
-
 
 ### ⚠ BREAKING CHANGES
 
@@ -27,16 +39,13 @@ All notable changes to this project will be documented in this file. See [standa
 
 * import `RegexString` from `@flex-development/tutils` ([763a305](https://github.com/flex-development/trext/commit/763a30542fbcb6c634baa50add0029ab99a49b09))
 
-
 ### :sparkles: Features
 
 * `TrextOptions#absolute` ([7ee867a](https://github.com/flex-development/trext/commit/7ee867ac7890d40e325a5e701186dd730063e0e7))
 
-
 ### :truck: Continuous Integration & Deployment
 
 * **workflows:** temporarily skip dependency graph check ([bbeae54](https://github.com/flex-development/trext/commit/bbeae54f1f0a0b305aeb3893d5df955bbecf93d7))
-
 
 ### :pencil2: Housekeeping
 
@@ -49,23 +58,19 @@ All notable changes to this project will be documented in this file. See [standa
 
 ## [1.1.0](https://github.com/flex-development/trext/compare/trext@1.0.2...trext@1.1.0) (2021-10-15)
 
-
 ### :truck: Continuous Integration & Deployment
 
 * **workflows:** add `delete-release-branch` job ([804c006](https://github.com/flex-development/trext/commit/804c00622ba9734ed9177a9941bc4b25a908b8f3))
 * **workflows:** push to protected branch 'main' ([a03238c](https://github.com/flex-development/trext/commit/a03238c84113788b5fd84bd731f162492c09a587))
 
-
 ### :robot: Testing
 
 * **plugins:** add fully specified directory index tests ([2115bd8](https://github.com/flex-development/trext/commit/2115bd8b901c898bb319f9ef69b73db3eaa6a551))
-
 
 ### :hammer: Build
 
 * **cjs:** enable downleveling ([01a41ec](https://github.com/flex-development/trext/commit/01a41ecad5e879195b9cfb9eb53ca5ebc32ce8c9))
 * **typescript:** add sourcemaps for `.d.ts` files ([ed57233](https://github.com/flex-development/trext/commit/ed57233cd3f5d1a1e89c4cff1262c3a26a1e0db0))
-
 
 ### :pencil2: Housekeeping
 
@@ -79,13 +84,11 @@ All notable changes to this project will be documented in this file. See [standa
 * **typescript:** enable `noUncheckedIndexedAccess` ([aa95c2d](https://github.com/flex-development/trext/commit/aa95c2d4b2d732bf4dd2d7a4c77d2fc02b2752ba))
 * **typescript:** upgrade to typescript@4.5.0-beta ([7e9d04e](https://github.com/flex-development/trext/commit/7e9d04e5eef3fa3b224bcf69adb220ccbe09b089))
 
-
 ### :sparkles: Features
 
 * transform export declarations ([#5](https://github.com/flex-development/trext/issues/5)) ([f937db0](https://github.com/flex-development/trext/commit/f937db042a4f6611636dad64d1b91e8439ea3161))
 
 ### [1.0.2](https://github.com/flex-development/trext/compare/trext@1.0.1...trext@1.0.2) (2021-10-13)
-
 
 ### :bug: Fixes
 
@@ -93,12 +96,10 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### [1.0.1](https://github.com/flex-development/trext/compare/trext@1.0.0...trext@1.0.1) (2021-10-13)
 
-
 ### :pencil2: Housekeeping
 
 * **tools:** add `ts-patch`, drop `ttypescript` ([7c38efc](https://github.com/flex-development/trext/commit/7c38efc692f46475968615dfd01725e0cc030f21))
 * **tools:** add `tsc-prog` to build workflow ([a14fd44](https://github.com/flex-development/trext/commit/a14fd445c80d5e8b035411a37492245dad2ddbe2))
-
 
 ### :bug: Fixes
 
@@ -106,11 +107,9 @@ All notable changes to this project will be documented in this file. See [standa
 
 ## 1.0.0 (2021-10-10)
 
-
 ### :nail_care: Formatting & Structure
 
 * drop `unicorn/prefer-at` rule ([9384aec](https://github.com/flex-development/trext/commit/9384aec28a1dbcdf4760f19f8fc31cb6758b0554))
-
 
 ### :sparkles: Features
 
@@ -132,13 +131,11 @@ All notable changes to this project will be documented in this file. See [standa
 * **utils:** `saveFile` ([dca9764](https://github.com/flex-development/trext/commit/dca97641e60994b90a59d730a2e3f4ef0cca3933))
 * **utils:** `sourceMappingURL` ([9119cc1](https://github.com/flex-development/trext/commit/9119cc17dd71e59b78b4d6a821d69d5066e46703))
 
-
 ### :hammer: Build
 
 * add `./plugins` and `./plugins/*` exports ([d7f32a4](https://github.com/flex-development/trext/commit/d7f32a48237410bfbb457861cf758627dac22f9d))
 * add `./utils` and `./utils/*` exports ([07b3d30](https://github.com/flex-development/trext/commit/07b3d309272c0e2439d379262b3b95c7ca968fef))
 * add `types` to build artifacts ([3c5a258](https://github.com/flex-development/trext/commit/3c5a258dc553d284c6eb63675b94f84df29041d2))
-
 
 ### :book: Documentation
 
@@ -148,7 +145,6 @@ All notable changes to this project will be documented in this file. See [standa
 * update `TrextOptions#pattern` description ([dfa2611](https://github.com/flex-development/trext/commit/dfa26118465a714fe99fe612a347f073fb1a5471))
 * update `TrextOptions` description ([2fa11a8](https://github.com/flex-development/trext/commit/2fa11a86895f1b8840a73aa229394c36c5384d37))
 * update project description ([1322a0f](https://github.com/flex-development/trext/commit/1322a0f248459c2b74b0b324a1d2883ed2f36673))
-
 
 ### :pencil2: Housekeeping
 
@@ -163,7 +159,6 @@ All notable changes to this project will be documented in this file. See [standa
 * **tools:** fix typo in `scripts/jest.sh` ([1ad80b2](https://github.com/flex-development/trext/commit/1ad80b2950e3a45bc981c2f9ebd268cf2a6c3045))
 * update package keywords ([1949965](https://github.com/flex-development/trext/commit/194996535c49f848b017db90666f46528aff5579))
 * update package keywords ([3d9be81](https://github.com/flex-development/trext/commit/3d9be81478deac861260b4bcaf400cdbf7a859b1))
-
 
 ### :truck: Continuous Integration & Deployment
 
