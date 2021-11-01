@@ -52,26 +52,26 @@
       "import": "./esm/config/index.mjs",
       "require": "./cjs/config/index.cjs"
     },
-    "./config/": {
-      "import": "./esm/config/",
-      "require": "./cjs/config/"
+    "./config/*": {
+      "import": "./esm/config/*.mjs",
+      "require": "./cjs/config/*.cjs"
     },
     "./interfaces": {
       "import": "./esm/interfaces/index.mjs",
       "require": "./cjs/interfaces/index.cjs"
     },
-    "./interfaces/": {
-      "import": "./esm/interfaces/",
-      "require": "./cjs/interfaces/"
+    "./interfaces/*": {
+      "import": "./esm/interfaces/*.mjs",
+      "require": "./cjs/interfaces/*.cjs"
     },
     "./package.json": "./package.json",
     "./plugins": {
       "import": "./esm/plugins/index.mjs",
       "require": "./cjs/plugins/index.cjs"
     },
-    "./plugins/": {
-      "import": "./esm/plugins/",
-      "require": "./cjs/plugins/"
+    "./plugins/*": {
+      "import": "./esm/plugins/*.mjs",
+      "require": "./cjs/plugins/*.cjs"
     },
     "./trext": {
       "import": "./esm/trext.mjs",
@@ -81,17 +81,17 @@
       "import": "./esm/types/index.mjs",
       "require": "./cjs/types/index.cjs"
     },
-    "./types/": {
-      "import": "./esm/types/",
-      "require": "./cjs/types/"
+    "./types/*": {
+      "import": "./esm/types/*.mjs",
+      "require": "./cjs/types/*.cjs"
     },
     "./utils": {
       "import": "./esm/utils/index.mjs",
       "require": "./cjs/utils/index.cjs"
     },
-    "./utils/": {
-      "import": "./esm/utils/",
-      "require": "./cjs/utils/"
+    "./utils/*": {
+      "import": "./esm/utils/*.mjs",
+      "require": "./cjs/utils/*.cjs"
     }
   },
   "main": "./cjs/trext.min.cjs",
