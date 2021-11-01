@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.0.4](https://github.com/flex-development/trext/compare/trext@2.0.3...trext@2.0.4) (2021-11-01)
+
+
+### :bug: Fixes
+
+* package exports (actually) ([a5de456](https://github.com/flex-development/trext/commit/a5de456fdc42995a0dec1ffc00d07948e1423b06))
+
+
+### :hammer: Build
+
+* **deps:** use `@flex-development/tutils@4.2.3` ([c3b72eb](https://github.com/flex-development/trext/commit/c3b72eb98cf53da0e357db8311dac016aa99e97b))
+
 ### [2.0.3](https://github.com/flex-development/trext/compare/trext@2.0.2...trext@2.0.3) (2021-10-31)
 
 ### :bug: Fixes
